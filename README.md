@@ -1,55 +1,95 @@
 # Better Call AI
-**Your AI Guide to Indian Law**
 
-Repository: [MoAftab-01/better-call-ai](https://github.com/MoAftab-01/better-call-ai).
-The local folder name is **Better Call AI**. See [the rebrand guide](docs/rebrand.md)
-for compatibility names, preserved historical records and safe folder-rename steps.
+An Indian-law-themed chat and browser voice portfolio project, built around explicit evidence and publication boundaries.
 
-**Public website deployment:** the application is prepared to run with no public
-corpus. Visitors see "Source publication pending"; legal research and citations
-stay unavailable until separate signed authorization. The private local research
-capability below is not the public site's availability claim. See the
-[hosted website deployment guide](docs/public-website-deployment.md) for the exact
-environment, deployment commands, smoke tests and rollback procedure. No cloud
-deployment or source publication has been performed.
+## Live demo and GitHub
 
-A locally hosted English legal research workspace built with FastAPI, React,
-TypeScript and Vite. It now supports end-to-end chat over a small, explicitly
-bounded archival corpus. It describes source documents; it does not determine
-current law or provide personalized legal advice.
+**[Try the live demo](https://better-call-ai-mohammedaftabahamed2-8189.vercel.app/)** · [GitHub repository](https://github.com/MoAftab-01/better-call-ai) · [Backend health](https://better-call-ai-api.onrender.com/api/health) · [API documentation](https://better-call-ai-api.onrender.com/docs)
 
-## What works
+## v1.0 status
 
-- BM25 and optional local Sentence Transformers/FAISS/RRF search over 555
-  unapproved archival selections: BNS 204, BNSS 259, BSA 89, and three complete
-  commencement paragraphs, when the separate exact source bundle is present.
-- Original PDF/processed-record hashes, page IDs, normalized line ranges, QA
-  exclusions and V1/V2 candidate bindings are checked before sources are used.
-- Optional Groq inference selects relevant evidence IDs. The server constructs
-  answers from exact complete source quotations and validates citations.
-  Unconstrained model prose is deliberately not published as a legal answer.
-- Without Groq configuration, deterministic extractive chat still works.
-  Without adequate evidence, the assistant abstains instead of inventing law.
-- Browser-only bounded conversation history, loading/error/retry controls,
-  Enter/Shift+Enter, clear conversation and answer-specific source cards.
-- Existing health APIs, ingestion and evidence-review contracts remain intact.
+**An isolated synthetic chat and browser voice demo is live.** Choose **Try synthetic demo**, then try `Fictional rent receipt exercise`, `Fictional parcel exercise`, or `Fictional document timeline`.
 
-Optional browser dictation and read aloud have consent, stop/error controls and
-typed fallbacks. Speech may use the browser provider's online service. Telephony,
-multilingual answering, comprehensive coverage and current-law certification are
-unavailable. All real evidence remains unapproved. See the
-[completion sprint guide](docs/completion-sprint.md) for hybrid setup, measured
-evaluation, deployment preparation and honest remaining blockers.
+The production demo uses deterministic, original fictional examples. It does **not** generate open-ended legal answers, search official documents, or supply legal citations. **Public legal research remains unavailable pending separate source publication approval.** This is an engineering demonstration, not a production legal-advice service.
 
-## Windows PowerShell setup
+Groq is optional and is **not enabled for the deterministic production release**. Neither a provider key nor demo access can authorize publication of legal evidence.
 
-For the separate, approval-gated public BM25 runtime, candidate inventory and
-deployment configuration, see [public corpus deployment](docs/public-corpus-deployment.md).
-Candidate preparation is complete; real corpus publication and deployment still
-require explicit approval and applicable-rights review. No private evidence is
-bundled into that runtime, and it fails closed without a separately pinned decision.
+## Product screenshots
 
-Use Python 3.12, Node.js 24 and npm. Run from the repository root:
+Actual screenshots of the deployed website, captured on 23 November 2026 after submitting one fictional rent-receipt question. No mocked responses or image-generated UI. The mobile image uses Chrome viewport emulation, not a physical-phone test.
+
+![Desktop synthetic conversation with publication-pending notice and browser voice controls](docs/images/demo-desktop.png)
+
+<details>
+<summary>View the mobile layout</summary>
+
+![Mobile synthetic conversation and source-unavailable panel](docs/images/demo-mobile.png)
+
+</details>
+
+## Public demo features
+
+- Explicit opt-in to **Demo mode — synthetic examples**, with a disclaimer on every response.
+- Three fictional paperwork scenarios; out-of-scope questions receive a scope explanation.
+- Typed chat, loading, errors, retry, cancellation, and clear conversation.
+- **Enter** to send; **Shift+Enter** for a newline.
+- Optional browser dictation and read aloud, with consent, stop/cancel controls, and typed fallback.
+- Responsive desktop/mobile layout, labelled controls, keyboard interaction, and connection status.
+- A visible publication-pending notice; research and official citations stay unavailable.
+
+## Architecture and technology stack
+
+```mermaid
+flowchart LR
+    UI[React / TypeScript on Vercel] -->|HTTPS: demo routes| API[FastAPI on Render]
+    API --> Demo[Isolated synthetic demo service]
+    Demo --> Samples[Three original fictional examples]
+    Voice[Browser speech APIs] --> UI
+    API --> Gate[Separate research publication gate]
+    Gate --> Blocked[No approved public corpus: research blocked]
+```
+
+| Layer | Technology and responsibility |
+| --- | --- |
+| Frontend | React, TypeScript, Vite, plain CSS, Lucide icons |
+| Backend | Python 3.12, FastAPI, Pydantic validation, Uvicorn, HTTPX |
+| Public hosting | Vercel frontend; Render backend with one worker and public/BM25 configuration |
+| Demo | Fixed server-authored samples; no corpus, embeddings, FAISS, or model download |
+| Optional provider | Groq selects a synthetic scenario ID; server controls all response text |
+| Verification | pytest, Node guard tests, installed-Chrome/CDP browser tests |
+
+**Separate local research pipeline:** manifest-based PDF/TXT ingestion, extraction QA, hash-bound passage review, versioned evidence bindings, BM25 and optional Sentence Transformers/FAISS hybrid retrieval, and server-validated source citations. Its 555 archival selections are unapproved evidence, not part of this public demo. Exact private source files are excluded from Git and the runtime package. A fresh clone can run the synthetic demo without them; full real-source verification cannot.
+
+See the [MVP architecture guide](docs/working-mvp.md), [expanded local research guide](docs/completion-sprint.md), and [evidence-binding migration](docs/evidence-migration.md). The [earlier architecture document](docs/architecture.md) describes the pre-chat evidence foundation; its feature-availability statements are historical.
+
+## How the deterministic demo works
+
+1. The browser sends only the current question to `POST /api/demo/chat`, without a privileged bearer token or conversation history.
+2. The server validates the request and matches keywords against three fictional scenarios: a renter's receipts, a shopper's parcel records, or a student's document timeline.
+3. It returns a fixed sample plus the synthetic disclaimer. An unmatched question gets an explanation of the demo's limits.
+4. Every response has `mode: synthetic_demo` and an empty `citations` array. No private evidence or retrieval service is accessed by this route.
+
+Optional Groq mode sends the question and these synthetic examples only. It can select one known scenario ID; arbitrary model prose is never used as an answer. Missing configuration, provider errors, invalid selections, or timeouts fall back to deterministic behavior. See the [demo implementation and acceptance guide](docs/synthetic-demo.md).
+
+## Browser speech-to-text and text-to-speech
+
+Accept the speech consent checkbox, choose **Dictate question**, and allow microphone access. Dictation fills the draft; it **never submits automatically**. Review the transcript before sending. **Stop recording** ends capture; **Cancel recording** discards pending recognition results. **Read aloud** reads the response, including its disclaimer; **Stop reading** cancels playback.
+
+Recognition is configured for `en-IN`. Availability, accuracy, voices, and permissions depend on the browser/device. Use HTTPS or localhost; a phone's ordinary HTTP LAN address is not a secure microphone context. Unsupported browsers retain typed chat and readable responses. Browser speech providers may receive audio or text and may require internet access. There is no telephone calling or server-side audio storage.
+
+## Security, privacy and legal limitations
+
+- **Publication isolation:** enabling the demo does not alter signatures, pins, manifests, review history, or legal-evidence approvals. Public mode never falls back to the private corpus.
+- **Separate access boundaries:** the narrow synthetic endpoint is public. Production research retains bearer authentication and fails closed without a valid, explicitly approved public corpus. No privileged token belongs in frontend code or `VITE_*` variables.
+- **Bounded requests:** demo limit of 10 attempts/minute/process, shared concurrency of two, 16,000-byte body cap, 2,000-character questions, and bounded timeouts. These are implementation limits, not performance claims or distributed abuse protection.
+- **Conversation privacy:** up to 40 messages remain in browser memory; demo history is not sent. Clear/reload removes local conversation state. The backend does not persist conversations. Avoid personal or confidential information; hosting and speech-provider processing remain separate privacy considerations.
+- **Legal scope:** synthetic samples establish no rights, remedies, statutory deadlines, current law, or case applicability. No verified official citations, comprehensive coverage, legal certification, or lawyer-client relationship is claimed. Consult a qualified legal professional for your circumstances.
+
+Corpus publication authorization and legal-passage approval are separate decisions. Neither has been granted by releasing this demo. See [publication review](docs/publication-review.md) and [public-corpus security/deployment](docs/public-corpus-deployment.md).
+
+## Local setup and environment
+
+Use Python 3.12 and Node.js 24 with npm. From the repository root in Windows PowerShell:
 
 ```powershell
 if (-not (Test-Path '.\.venv\Scripts\python.exe')) { py -3.12 -m venv .venv }
@@ -57,144 +97,109 @@ if (-not (Test-Path '.\.venv\Scripts\python.exe')) { py -3.12 -m venv .venv }
 npm.cmd --prefix frontend ci
 ```
 
-Base chat works without optional ML packages. The browser tests use installed
-Chrome/Edge and Node's built-in WebSocket client. Backend requirements are not
-fully locked; verification uses the installed environment, not a promise that
-all future dependency resolutions will behave identically.
-
-## Backend - terminal 1
-
-Groq is optional. Set these **only in the backend terminal** if desired:
+Backend, terminal 1 (public mode with no corpus):
 
 ```powershell
-$env:GROQ_API_KEY = [System.Net.NetworkCredential]::new('', (Read-Host 'Groq API key' -AsSecureString)).Password
-$env:GROQ_MODEL = Read-Host 'An available Groq chat model ID supporting JSON object mode'
-.\.venv\Scripts\python.exe -B -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --no-access-log
+$env:KANOON_ENV = 'local'
+$env:CORPUS_KIND = 'public'
+$env:RETRIEVAL_MODE = 'bm25'
+$env:PUBLIC_CORPUS_DIR = '.\public-corpus-not-installed'
+$env:DEMO_ENABLED = 'true'
+$env:DEMO_PROVIDER = 'deterministic'
+.\.venv\Scripts\python.exe -B -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8001 --workers 1 --no-access-log
 ```
 
-To run without Groq, omit the two environment assignments. There is no hardcoded
-model default. A missing/invalid model or key selects extractive mode; an
-unsupported configured model returns a safe configuration error. See
-[Groq's API reference](https://console.groq.com/docs/api-reference) and your
-account's available models. The tracked [.env.example](.env.example) is a
-placeholder template, **not automatically loaded**. Never put a key in VITE_*
-variables, source code, a committed file or browser storage.
+Use a fresh terminal without publication pins, signing configuration, or an existing approved corpus at that path. No legal source files or Groq credentials are needed.
 
-## Frontend - terminal 2
+Frontend, terminal 2:
 
 ```powershell
+Remove-Item Env:VITE_API_BASE_URL -ErrorAction SilentlyContinue
+$env:KANOON_BACKEND_PORT = '8001'
 npm.cmd --prefix frontend run dev
 ```
 
-Open **http://127.0.0.1:5173**. Backend: **http://127.0.0.1:8000**.
-Vite proxies /api locally. Both servers bind to loopback.
+Open **http://127.0.0.1:5173/**; backend health is **http://127.0.0.1:8001/api/health**. Vite proxies `/api` to port 8001. If a port is occupied, choose a free port and update `KANOON_BACKEND_PORT` accordingly; do not stop unrelated processes.
 
-If either port belongs to another application, leave that application alone.
-Choose free alternate ports in separate terminals:
+| Setting | Local demo | Hosted release |
+| --- | --- | --- |
+| `DEMO_ENABLED` / `DEMO_PROVIDER` | `true` / `deterministic` | Same, backend only |
+| `KANOON_ENV` | `local` | `production` |
+| `CORPUS_KIND` / `RETRIEVAL_MODE` | `public` / `bm25` | Same; no private fallback |
+| `PUBLIC_CORPUS_DIR` | Deliberately absent directory | Deliberately absent directory |
+| Publication pins, signer and approval files | Absent | Absent; do not fabricate values |
+| `KANOON_ACCESS_TOKEN` | Not needed for local demo | Backend-only research protection, distinct random secret of at least 32 characters |
+| `KANOON_ALLOWED_ORIGINS` | Unset in a fresh local terminal | Exact frontend HTTPS origin |
+| `VITE_API_BASE_URL` | Unset; use Vite proxy | `https://better-call-ai-api.onrender.com` |
+| `GROQ_API_KEY` / `GROQ_MODEL` | Not needed | Not used by deterministic demo |
+
+[.env.example](.env.example) is a placeholder template, **not automatically loaded**. Stable `KANOON_*` names and the health service identifier `better-call-kanoon` are retained for compatibility; see [rebrand notes](docs/rebrand.md). For hosting, runtime dependencies, environment setup, smoke tests and rollback, use the [deployment guide](docs/public-website-deployment.md) together with the [current demo guide](docs/synthetic-demo.md). Older preparation reports are historical records, not claims that the current website is undeployed.
+
+## API endpoints
+
+| Method and route | Purpose in the public release |
+| --- | --- |
+| `GET /` | Welcome response |
+| `GET /api/health` | Process health, `200`; does not imply research readiness |
+| `GET /api/demo/status` | Demo enabled flag, provider mode, and isolation status |
+| `POST /api/demo/chat` | Synthetic-only question/response; empty citations |
+| `GET /api/chat/status` | Research availability and publication-pending state |
+| `GET /api/ready` | `503` while no approved public corpus is available; intentional |
+| `POST /api/chat` | Real research route; production authentication and publication gate remain active |
+| `GET /docs` / `GET /openapi.json` | Interactive documentation / machine-readable schema |
+
+Example local synthetic request:
 
 ```powershell
-# Backend terminal:
-.\.venv\Scripts\python.exe -B -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8001 --no-access-log
-# Frontend terminal:
-$env:KANOON_BACKEND_PORT = '8001'
-npm.cmd --prefix frontend run dev -- --port 5174
+Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8001/api/demo/chat' `
+  -ContentType 'application/json' -Body '{"message":"Fictional rent receipt exercise"}'
 ```
 
-KANOON_BACKEND_PORT is a Vite development-server setting, not an API key or a
-client-controlled source path. For separate production hosts, configure the
-public HTTPS backend origin in frontend VITE_API_BASE_URL and explicit production
-CORS/access protection as described in the completion guide. No deployment was performed.
+## Automated testing and verification
 
-## Evidence and index
+The pre-commit run for demo commit [`fb6f6f8`](https://github.com/MoAftab-01/better-call-ai/commit/fb6f6f82c2242ec05ae1976786f9488025d962a5) recorded:
 
-A public clone contains source, tests, QA/provenance metadata and unapproved
-proposal packets. It does **not** contain the six original PDFs or six processed
-records. Place the separate original bundle at its recorded paths under ignored
-backend/data/; consult [the evidence migration guide](docs/evidence-migration.md).
-Re-ingesting a PDF does not guarantee the same processed hash because extraction
-versions and ingestion timestamps matter.
+| Check | Result |
+| --- | --- |
+| Full backend suite, including 32 synthetic demo tests | **365 passed**, one existing Starlette/HTTPX deprecation warning |
+| Frontend lint, TypeScript, hosted production build | Passed; actual Render API origin configured |
+| Provider/configuration guard tests | **10 passed** |
+| Protected-file comparison | **179 hashes unchanged**; six PDFs, six processed records, 404 physical pages accounted for |
+| V1 and V2 review audit chains | PASS; zero real events or eligible passages |
 
-```powershell
-.\.venv\Scripts\python.exe -B -m backend.publication metadata
-# Requires exact source bundle; fails closed if absent or stale:
-.\.venv\Scripts\python.exe -B -m backend.publication verify
-.\.venv\Scripts\python.exe -B -m backend.retrieval check
-.\.venv\Scripts\python.exe -B -m backend.retrieval build --output backend/data/chat-index/local-v1.json
-```
+Existing browser automation recorded 6 no-corpus checks, 10 mocked-speech demo checks, and 9 unsupported-speech checks. Mocks test UI behavior, not microphone accuracy or real audio playback. The maintainer subsequently reported all seven manual acceptance checks complete; this is distinct from automated results and from any legal-source approval.
 
-The last command writes a NEW hash-only manifest, refusing overwrite. The research
-index is built in memory at the first chat/status request. Restart after
-adding the bundle. Every search rechecks live source bindings, including after a
-model call. Malformed, mismatched, excluded or instruction-like passages are
-quarantined. No HTTP request can choose source paths. No indexing operation
-writes approvals or review events.
-
-## API and supported questions
-
-- GET / and GET /api/health retain their existing response contracts.
-- GET /api/chat/status reports corpus, retrieval and configuration readiness.
-- POST /api/chat accepts message (1-2,000 characters), optional conversation_id,
-  at most six recent user/assistant turns (1,200 characters each), optional top_k
-  (1-5, default 3) and source_ids (up to six exact document IDs).
-- GET /api/ready distinguishes runtime readiness from actual corpus availability.
-- Responses include answer, conversation ID, evidence status, citations, source
-  hashes/page/line metadata, provider/generation status and uncertainty.
-- /docs exposes OpenAPI schemas. Request body cap: 16,000 bytes. Local rate cap:
-  30 chat requests/minute per server process. Whole request timeout: 25 seconds.
-
-Try: 'What does the BNS commencement notification state?', 'What exception appears
-in S.O. 850(E)?', 'What does the BNSS notification say about the First Schedule?',
-or 'What is stated in the BSA commencement notification?'
-Also try 'BNS section 15', 'BNSS concurrent consecutive sentences several offences',
-or 'BSA fact especially knowledge person burden proving'. These return unreviewed
-original text with page context and unresolved QA flags, not verified provisions.
-
-Consumer, tenancy, employment, current applicability and personalized-rights
-questions are unsupported. Unclear follow-ups should repeat the notification
-name; history is untrusted context, not an authority source.
-ARCHIVAL_UNVERIFIED means identifiable archival bytes, not legal correctness.
-INSUFFICIENT_EVIDENCE means abstention. This release never emits VERIFIED_REVIEWED:
-indexing and model selection cannot promote a proposed passage to approval.
-
-## Privacy and local-only security
-
-Messages remain in browser memory (40 messages); six recent turns are sent with
-each request. Questions reach the backend and, when Groq is configured and
-evidence exists, the question, history and selected evidence are sent to Groq.
-The backend does not persist conversations. Provider handling/retention is
-governed separately by Groq; no zero-retention claim is made. Clear/reload removes
-local history but cannot undo an external transmission already made.
-
-Logs record request IDs, status codes, citation counts and durations, not prompts
-or credentials. Responses use no-store caching. Groq uses certificate validation,
-fixed HTTPS destinations, trust_env=False, bounded output and limited transient
-retries. The model selects only server-issued IDs; it cannot supply source URLs
-or legal claims. This does not prove legal truth or solve every injection attack.
-
-**Restricted demo:** production mode requires a separate private access token,
-limits chat to 30 requests/minute and two concurrent requests per server process.
-Use one worker; broader public service requires authenticated per-user quotas,
-shared limits and provider spending controls. Speak to a
-qualified legal professional about your circumstances.
-
-## Tests
+Live checks on 23 November 2026 returned frontend/health `200`, demo enabled with `provider: deterministic`, and research readiness `503` with `publication_pending`. These are point-in-time observations, not an uptime guarantee.
 
 ```powershell
-$run = 'backend/data/test-runs/mvp-' + [guid]::NewGuid().ToString('N').Substring(0,8)
-.\.venv\Scripts\python.exe -B -m pytest backend/tests -q --basetemp $run -p no:cacheprovider
+$testTemp = Join-Path $env:TEMP ('bcai-tests-' + [guid]::NewGuid().ToString('N'))
+.\.venv\Scripts\python.exe -B -m pytest backend/tests -q -p no:cacheprovider --basetemp $testTemp
 npm.cmd --prefix frontend run lint
 npm.cmd --prefix frontend run typecheck
-npm.cmd --prefix frontend run build
+$env:VITE_API_BASE_URL = 'https://better-call-ai-api.onrender.com'
+npm.cmd --prefix frontend run build:hosted
+node --test frontend/tests/provider-guard.test.mjs frontend/tests/hosted-env.test.mjs
 ```
 
-All automated provider calls are mocked; tests never spend Groq credits.
-See [the MVP architecture and browser verification guide](docs/working-mvp.md)
-for installed-Chrome E2E tests and exact mocked-provider setup.
-See [the ingestion manual](docs/ingestion-manual.md) for synthetic PDF/TXT use.
+Full private-source checks need the exact separate bundle; synthetic tests and the public demo need no legal corpus. Backend development dependencies are not fully locked. See the [browser-test instructions](docs/synthetic-demo.md#verification-commands), [synthetic ingestion manual](docs/ingestion-manual.md), and [local research evaluation](docs/completion-sprint-results.md).
 
-Original V1/V2 reports, identities and the migration publication manifest remain
-unchanged historical artifacts from commit b08da7a. That manifest describes the
-migration snapshot, not a current full-file manifest after these MVP changes.
-Historical stage documents can describe earlier unavailable features; this
-README and the MVP guide describe current application behavior.
-The completion guide supersedes the initial MVP guide where features expanded.
+## Current limitations
+
+- Three fixed fictional scenarios; no open-ended legal reasoning or verified legal answers.
+- Public research, source citations and legal corpus distribution remain unavailable.
+- Local archival evidence has unresolved extraction, currentness and applicability limitations; hashes prove byte identity, not legal correctness.
+- Browser/device support and speech-provider connectivity vary. No telephony or multilingual answering.
+- A global per-process demo rate limit is not a per-user quota; shared production abuse controls remain future work.
+- Free-tier hosting can cold-start. No latency, throughput or availability guarantee is claimed.
+
+## Future roadmap
+
+Next priorities are independent source-rights review, passage QA and explicit authorization before any public legal retrieval, plus stronger operational controls. Later work may expand evaluated, source-bound research and voice accessibility. Nothing on the roadmap is an approval or release promise.
+
+See **[the completed, next and future milestones](docs/ROADMAP.md)**. Detailed stage records remain available through the [source inventory](docs/legal-source-inventory-stage2b.md), [acquisition](docs/legal-source-acquisition-stage2c.md), [ingestion](docs/legal-document-ingestion-stage2d.md), [text QA](docs/legal-text-quality-stage2e.md), [passage review](docs/legal-passage-review-stage2f.md), [discovery](docs/legal-passage-discovery-stage2g.md), and [human-review infrastructure](docs/legal-evidence-review-stage2h.md) guides. These historical records do not certify current law or grant publication permission.
+
+## Author and license
+
+Maintained by **Aftab ([MoAftab-01](https://github.com/MoAftab-01))**, as recorded in repository authorship and ownership.
+
+No project license file is currently present in the repository. No open-source license or blanket redistribution permission is claimed. Dependency licenses and rights in third-party legal documents are separate; source acquisition does not itself authorize republication.
