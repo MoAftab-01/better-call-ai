@@ -13,12 +13,18 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.concurrency import run_in_threadpool
 
+from .demo import DemoRequest, DemoResponse, DemoService
 from .models import ChatRequest, ChatResponse
 from .provider import ProviderError
 from .service import ChatService
 
 logger = logging.getLogger("kanoon.chat")
 ERRORS = {
+    "demo_disabled": "The synthetic demo is not enabled.",
+    "demo_origin_denied": "This browser origin is not allowed to use the demo.",
+    "demo_rate_limited": "Demo limit reached. Wait one minute before retrying.",
+    "demo_timeout": "The demo timed out. Retry shortly.",
+    "demo_unavailable": "The synthetic demo is unavailable. Retry shortly.",
     "corpus_not_approved": "The public corpus has not been approved for serving.",
     "access_required": "Enter the private demo access token supplied by the operator.",
     "deployment_not_configured": "Public chat is disabled until the operator configures access protection.",
@@ -34,10 +40,16 @@ ERRORS = {
 }
 
 
-def create_app(service=None):
+def create_app(service=None, *, demo_service=None):
     app = FastAPI(title="Better Call AI", description="Archival research workspace; public source publication is required. No current-law certification.")
     app.state.chat = service
     lock, arrivals = threading.Lock(), deque()
+    demo_enabled = os.environ.get("DEMO_ENABLED", "false") == "true"
+    demo_provider = os.environ.get("DEMO_PROVIDER", "deterministic")
+    if demo_provider not in {"deterministic", "groq"}:
+        raise ValueError("DEMO_PROVIDER must be deterministic or groq")
+    demo = demo_service if demo_service is not None else DemoService(demo_provider == "groq")
+    demo_arrivals = deque()
     environment = os.environ.get("KANOON_ENV", "local")
     if environment not in {"local", "production"}:
         raise ValueError("KANOON_ENV must be local or production")
@@ -69,9 +81,27 @@ def create_app(service=None):
     async def privacy_headers(request, call_next):
         nonlocal active
         # Bound actual streamed body bytes, including chunked requests, before JSON parsing.
-        guarded = request.url.path == "/api/chat" and request.method == "POST"
+        is_demo = request.url.path == "/api/demo/chat" and request.method == "POST"
+        guarded = (request.url.path == "/api/chat" or is_demo) and request.method == "POST"
+        if is_demo:
+            if not demo_enabled:
+                return error("demo_disabled", 404)
+            origin = request.headers.get("Origin")
+            local_origin = (not production and origin and urlparse(origin).scheme == "http"
+                and urlparse(origin).hostname in {"127.0.0.1", "localhost"}
+                and request.client is not None and request.client.host in {"127.0.0.1", "::1"})
+            if origin and origin not in origins and not local_origin:
+                return error("demo_origin_denied", 403)
+            # Global per-process cap, not spoofable via proxy/IP headers.
+            now = time.monotonic()
+            with lock:
+                while demo_arrivals and demo_arrivals[0] < now - 60:
+                    demo_arrivals.popleft()
+                if len(demo_arrivals) >= 10:
+                    return error("demo_rate_limited", 429, 60)
+                demo_arrivals.append(now)
         if guarded:
-            if production:
+            if production and not is_demo:
                 if not auth_ready:
                     return error("deployment_not_configured", 503)
                 supplied = request.headers.get("Authorization", "")
@@ -134,6 +164,21 @@ def create_app(service=None):
     def status(chat: ChatService = Depends(get_service)):
         return dict(**chat.status(), authentication_required=production,
                     deployment_ready=not production or auth_ready)
+
+    @app.get("/api/demo/status")
+    def demo_status():
+        return {"enabled": demo_enabled, "mode": "synthetic_demo",
+            "provider": demo_provider, "research_enabled_by_demo": False}
+
+    @app.post("/api/demo/chat", response_model=DemoResponse)
+    async def demo_chat(request: DemoRequest):
+        try:
+            async with asyncio.timeout(10):
+                return await demo.answer(request)
+        except TimeoutError:
+            return error("demo_timeout", 504)
+        except Exception:
+            return error("demo_unavailable", 503)
 
     @app.post("/api/chat", response_model=ChatResponse)
     async def chat(request: ChatRequest, chat: ChatService = Depends(get_service)):

@@ -316,3 +316,6 @@ details summary { cursor:pointer; line-height:1.8; }
 .publication-notice > svg { flex-shrink: 0; margin-top: 3px; color: #e6c677; }
 .publication-notice h2 { margin: 0 0 8px; font-size: 1rem; }
 .publication-notice p { margin: 0; line-height: 1.65; overflow-wrap: anywhere; }
+
+.demo-notice { padding: 16px 20px; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+.demo-notice p { line-height: 1.7; color: #eee4ca; font-size: .85rem; }

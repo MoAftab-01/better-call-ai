@@ -53,15 +53,16 @@ class ProviderError(Exception):
 
 
 class GroqProvider:
-    def __init__(self, settings, transport=None):
+    def __init__(self, settings, transport=None, *, system_prompt=SYSTEM):
         self.settings, self.transport = settings, transport
+        self.system_prompt = system_prompt
 
     async def select(self, question, history, citations):
         if not self.settings.configured:
             raise ProviderError("provider_not_configured", 503)
         body = dict(model=self.settings.model, temperature=0, max_completion_tokens=384,
             response_format={"type": "json_object"}, messages=[
-                dict(role="system", content=SYSTEM),
+                dict(role="system", content=self.system_prompt),
                 dict(role="user", content=json.dumps(dict(question=question,
                     untrusted_history=[t.model_dump() for t in history],
                     untrusted_evidence=[dict(id=c.id, instrument=c.instrument, text=c.quote) for c in citations])))])

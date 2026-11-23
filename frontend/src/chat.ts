@@ -21,7 +21,27 @@ export interface ChatStatus {
   research_message: string
   retrieval: { passages: number; mode: string; detail: string; corpus_kind?: string }
 }
-export interface Message { id: string; role: 'user' | 'assistant'; content: string; result?: Answer }
+export interface DemoAnswer {
+  mode: 'synthetic_demo'; answer: string; disclaimer: string
+  scenario_id: string | null; citations: never[]
+  provider_status: 'deterministic' | 'selected' | 'fallback'
+}
+export async function sendDemoQuestion(message: string, signal: AbortSignal): Promise<DemoAnswer> {
+  const response = await fetch(apiUrl('/api/demo/chat'), {
+    method: 'POST', signal, headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({ message }),
+  })
+  let data
+  try { data = await response.json() } catch { throw new Error('The demo returned an unreadable response. Please retry.') }
+  if (!response.ok) throw new Error(data?.error?.message || 'The demo request failed. Please retry.')
+  if (data.mode !== 'synthetic_demo' || typeof data.answer !== 'string' || typeof data.disclaimer !== 'string' ||
+      !Array.isArray(data.citations) || data.citations.length !== 0 ||
+      !['deterministic', 'selected', 'fallback'].includes(data.provider_status)) {
+    throw new Error('The backend returned an unexpected demo response.')
+  }
+  return data as DemoAnswer
+}
+export interface Message { id: string; role: 'user' | 'assistant'; content: string; result?: Answer; demo?: DemoAnswer }
 export function officialSource(url: string | null): string | undefined {
   if (!url) return undefined
   try {
