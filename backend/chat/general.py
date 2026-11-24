@@ -9,6 +9,7 @@ from pydantic import Field, field_validator
 from .demo import DemoRequest
 from .models import StrictModel, Turn
 from .provider import ProviderError, Settings
+from .telemetry import observed_provider, provider_http_attempt, provider_http_response, provider_usage
 
 DISCLAIMER = "AI-generated general information — not source-verified legal advice. No sources were verified; current law and applicability are unknown."
 SYSTEM = """You are Better Call AI, an Indian legal-INFORMATION assistant, not a lawyer.
@@ -84,6 +85,7 @@ class GeneralService:
     def configured(self):
         return self.settings.configured
 
+    @observed_provider("general")
     async def answer(self, request):
         context = " ".join([t.content for t in request.history if t.role == "user"] + [request.message])
         if WRONGDOING.search(context) or (PERSONAL.search(context) and HIGH_STAKES.search(context)):
@@ -102,8 +104,10 @@ class GeneralService:
         try:
             async with httpx.AsyncClient(timeout=httpx.Timeout(18, connect=5), trust_env=False,
                     follow_redirects=False, transport=self.transport) as client:
+                provider_http_attempt()
                 async with client.stream("POST", "https://api.groq.com/openai/v1/chat/completions",
                         headers={"Authorization":"Bearer " + self.settings.key}, json=body) as response:
+                    provider_http_response(response.status_code)
                     if response.status_code == 429:
                         raise ProviderError("provider_rate_limited", 429, 60)
                     if response.status_code in {400,401,403,404}:
@@ -116,6 +120,7 @@ class GeneralService:
                         if len(data)>65536:
                             raise ProviderError("provider_invalid_response", 502)
             result = json.loads(data)
+            provider_usage(result.get("usage") if isinstance(result,dict) else None)
             choice = result["choices"][0]
             if choice.get("finish_reason") != "stop" or choice["message"].get("tool_calls"):
                 raise ValueError("Incomplete or tool output")

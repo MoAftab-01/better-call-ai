@@ -20,6 +20,7 @@
     "backend/chat/demo.py",
     "backend/chat/general.py",
     "backend/chat/references.py",
+    "backend/chat/telemetry.py",
     "backend/chat/models.py",
     "backend/chat/provider.py",
     "backend/chat/service.py",

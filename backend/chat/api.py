@@ -1,11 +1,10 @@
 import asyncio
+import math
 from collections import deque
-import logging
 import os
 import secrets
 import threading
 import time
-from uuid import uuid4
 
 from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
@@ -20,8 +19,10 @@ from .models import ChatRequest, ChatResponse
 from .provider import ProviderError
 from .service import ChatService
 
-logger = logging.getLogger("kanoon.chat")
+from .telemetry import OperationalMiddleware, Telemetry, mark_error, mark_provider_deadline
 ERRORS = {
+    "ops_unavailable": "Operational metrics are unavailable.",
+    "ops_access_required": "Operational metrics require authorized access.",
     "assistant_disabled": "The AI Assistant is disabled. The synthetic demo may still be available.",
     "assistant_rate_limited": "AI Assistant limit reached. Please retry later or use the synthetic demo.",
     "assistant_origin_denied": "This browser origin is not allowed to use the AI Assistant.",
@@ -46,9 +47,10 @@ ERRORS = {
 }
 
 
-def create_app(service=None, *, demo_service=None, general_service=None):
+def create_app(service=None, *, demo_service=None, general_service=None, telemetry=None):
     app = FastAPI(title="Better Call AI", description="Archival research workspace; public source publication is required. No current-law certification.")
     app.state.chat = service
+    app.state.telemetry = telemetry if telemetry is not None else Telemetry()
     lock, arrivals = threading.Lock(), deque()
     demo_enabled = os.environ.get("DEMO_ENABLED", "false") == "true"
     demo_provider = os.environ.get("DEMO_PROVIDER", "deterministic")
@@ -72,6 +74,9 @@ def create_app(service=None, *, demo_service=None, general_service=None):
     production = environment == "production"
     access_token = os.environ.get("KANOON_ACCESS_TOKEN", "")
     auth_ready = len(access_token) >= 32 and access_token != os.environ.get("GROQ_API_KEY", "")
+    ops_token = os.environ.get("KANOON_OPS_TOKEN", "")
+    ops_ready = (32 <= len(ops_token) <= 256 and ops_token.isascii() and not any(c.isspace() for c in ops_token)
+        and ops_token not in {access_token, os.environ.get("GROQ_API_KEY", "")})
     origins = [s.strip() for s in os.environ.get("KANOON_ALLOWED_ORIGINS", "").split(",") if s.strip()]
     from urllib.parse import urlparse
     if any(urlparse(s).scheme != "https" or not urlparse(s).netloc or urlparse(s).path not in ("", "/") or
@@ -87,6 +92,7 @@ def create_app(service=None, *, demo_service=None, general_service=None):
         return app.state.chat
 
     def error(code, status, retry=None):
+        mark_error(code)
         headers = {"Cache-Control": "no-store"}
         if retry:
             headers["Retry-After"] = str(retry)
@@ -114,7 +120,9 @@ def create_app(service=None, *, demo_service=None, general_service=None):
             with lock:
                 while assistant_arrivals and assistant_arrivals[0] < now - 86400:
                     assistant_arrivals.popleft()
-                if len(assistant_arrivals) >= assistant_daily or sum(t >= now - 60 for t in assistant_arrivals) >= assistant_rpm:
+                if len(assistant_arrivals) >= assistant_daily:
+                    return error("assistant_rate_limited", 429, max(1, math.ceil(86400 - (now - assistant_arrivals[0]))))
+                if sum(t >= now - 60 for t in assistant_arrivals) >= assistant_rpm:
                     return error("assistant_rate_limited", 429, 60)
                 assistant_arrivals.append(now)
         if is_demo:
@@ -158,9 +166,9 @@ def create_app(service=None, *, demo_service=None, general_service=None):
             try:
                 async with asyncio.timeout(10):
                     async for chunk in request.stream():
-                        body.extend(chunk)
-                        if len(body) > 16000:
+                        if len(body) + len(chunk) > 16000:
                             return error("request_too_large", 413)
+                        body.extend(chunk)
             except TimeoutError:
                 return error("request_body_timeout", 408)
             request._body = bytes(body)
@@ -171,8 +179,20 @@ def create_app(service=None, *, demo_service=None, general_service=None):
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(_request, _exc):
+        mark_error("invalid_request")
         return JSONResponse(status_code=422, content={"error": {"code": "invalid_request",
             "message": "Send a nonempty message up to 2,000 characters and at most six recent user/assistant turns (1,200 characters each)."}})
+
+    @app.get("/api/ops/metrics", include_in_schema=False)
+    def operational_metrics(request: Request):
+        supplied = request.headers.get("Authorization", "")
+        local = (not production and not supplied and request.client is not None
+            and request.client.host in {"127.0.0.1", "::1"} and not request.headers.get("Origin")
+            and not any(h in request.headers for h in ("Forwarded", "X-Forwarded-For", "X-Real-IP")))
+        authenticated = ops_ready and secrets.compare_digest(supplied.encode(), ("Bearer " + ops_token).encode())
+        if not local and not authenticated:
+            return error("ops_access_required" if ops_ready else "ops_unavailable", 401 if ops_ready else 404)
+        return app.state.telemetry.snapshot()
 
     @app.get("/")
     def welcome():
@@ -188,6 +208,7 @@ def create_app(service=None, *, demo_service=None, general_service=None):
         corpus = data["retrieval"]["passages"] > 0
         configured = not production or auth_ready
         ready = configured and (data['available'] or not getattr(chat.index,'public_runtime',False))
+        if not ready: mark_error("research_not_ready")
         return JSONResponse(status_code=200 if ready else 503, content={
             "status": "ready" if ready else "blocked", "corpus_available": corpus,
             "research_ready": corpus and configured and data['available'], "authentication_required": production,
@@ -231,6 +252,7 @@ def create_app(service=None, *, demo_service=None, general_service=None):
             async with asyncio.timeout(22):
                 return await general.answer(request)
         except (TimeoutError, ProviderError) as exc:
+            if isinstance(exc, TimeoutError): mark_provider_deadline()
             return error("provider_timeout" if isinstance(exc, TimeoutError) else exc.code,
                 504 if isinstance(exc, TimeoutError) else exc.status,
                 getattr(exc, "retry_after", None))
@@ -246,26 +268,22 @@ def create_app(service=None, *, demo_service=None, general_service=None):
             if len(arrivals) >= 30:
                 return error("local_rate_limited", 429, 60)
             arrivals.append(now)
-        trace, started = str(uuid4()), time.monotonic()
         try:
             async with asyncio.timeout(25):
                 # ChatService offloads hash/search work; provider I/O stays async.
                 result = await chat.answer(request)
-            logger.info("chat_completed request_id=%s evidence=%s citations=%d elapsed_ms=%d",
-                trace, result.evidence_status, len(result.citations), (time.monotonic()-started)*1000)
             return result
         except (TimeoutError, ProviderError) as exc:
             code = "provider_timeout" if isinstance(exc, TimeoutError) else exc.code
             status_code = 504 if isinstance(exc, TimeoutError) else exc.status
-            logger.warning("chat_failed request_id=%s code=%s", trace, code)
             return error(code, status_code, getattr(exc, "retry_after", None))
         except Exception:
-            logger.error("chat_failed request_id=%s code=internal_error", trace)
             return error("internal_error", 500)
 
     # Outermost CORS also covers early authentication/size-limit failures.
     if origins:
         app.add_middleware(CORSMiddleware, allow_origins=origins,
             allow_methods=["GET", "POST"], allow_headers=["Content-Type", "Authorization"],
-            allow_credentials=False)
+            allow_credentials=False, expose_headers=["X-Request-ID"])
+    app.add_middleware(OperationalMiddleware, metrics=app.state.telemetry)
     return app

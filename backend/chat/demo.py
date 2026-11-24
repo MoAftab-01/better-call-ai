@@ -7,6 +7,7 @@ from pydantic import Field, field_validator
 
 from .models import StrictModel
 from .provider import GroqProvider, Settings
+from .telemetry import mark_provider_deadline
 
 DISCLAIMER = "Fictional/synthetic example only. Not verified Indian legal advice. No official sources or citations were used."
 SYSTEM = """Select one fictional exercise from the supplied synthetic examples.
@@ -84,6 +85,8 @@ class DemoService:
                     match = next((s for s in SCENARIOS if s.id == ids[0]), None)
                     if match:
                         selected, state = match, "selected"
+            except TimeoutError:
+                mark_provider_deadline()
             except Exception:
                 # Never expose provider errors, user text, credentials or model prose.
                 pass

@@ -11,6 +11,7 @@ import re
 import httpx
 
 from .models import Selection
+from .telemetry import observed_provider, provider_http_attempt, provider_http_response, provider_usage
 
 SYSTEM = """You help research Indian legal archival documents, not current legal advice.
 Select only source IDs whose COMPLETE supplied paragraphs support the question.
@@ -57,6 +58,7 @@ class GroqProvider:
         self.settings, self.transport = settings, transport
         self.system_prompt = system_prompt
 
+    @observed_provider("selection")
     async def select(self, question, history, citations):
         if not self.settings.configured:
             raise ProviderError("provider_not_configured", 503)
@@ -70,8 +72,10 @@ class GroqProvider:
             try:
                 async with httpx.AsyncClient(timeout=httpx.Timeout(self.settings.timeout, connect=5),
                         trust_env=False, transport=self.transport) as client:
+                    provider_http_attempt()
                     async with client.stream("POST", "https://api.groq.com/openai/v1/chat/completions",
                             headers={"Authorization": "Bearer " + self.settings.key}, json=body) as response:
+                        provider_http_response(response.status_code)
                         if response.status_code == 429:
                             raise ProviderError("provider_rate_limited", 429, 30)
                         if response.status_code >= 500 and attempt == 0:
@@ -87,6 +91,7 @@ class GroqProvider:
                             if len(data) > 65536:
                                 raise ProviderError("provider_invalid_response", 502)
                 result = json.loads(data)
+                provider_usage(result.get("usage") if isinstance(result,dict) else None)
                 choice = result["choices"][0]
                 if choice.get("finish_reason") != "stop":
                     return None
