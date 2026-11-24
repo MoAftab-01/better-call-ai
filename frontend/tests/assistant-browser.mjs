@@ -43,6 +43,10 @@ try{
   }
   if(r.method==='Fetch.requestPaused'){
    if(intercept==='hold')return
+   if(intercept==='badrefs'){
+    const refs=['https://evil.example/','https://www.sci.gov.in/','https://nalsa.gov.in/'].map(url=>({url,title:'SYNTHETIC link',purpose:'test',checked_at:'2026-11-24T10:00:00Z'}))
+    void rpc('Fetch.fulfillRequest',{requestId:r.params.requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'application/json'}],body:Buffer.from(JSON.stringify({references:refs,sources_verified_for_answers:false,used_in_ai_answers:false})).toString('base64')}).catch(e=>{if(!e.message.includes('Invalid InterceptionId'))throw e});return
+   }
    if(intercept==='missing'){
     void rpc('Fetch.fulfillRequest',{requestId:r.params.requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'application/json'}],body:Buffer.from(JSON.stringify({enabled:true,available:false,mode:'general_information',sources_verified:false,message:'SYNTHETIC missing provider configuration'})).toString('base64')});return
    }
@@ -172,6 +176,75 @@ try{
  assert.equal(await evaluate('document.querySelector(".send-button").disabled'),false)
  await rpc('Fetch.disable');intercept=false
  checks.push('missing provider disables AI sending; independent deterministic demo stays available')
+ if(!noSpeech){
+  await rpc('Page.navigate',{url})
+  await until('document.querySelector(".assistant-notice button") && document.querySelectorAll(".official-references a").length===3')
+  const refs=await evaluate('Array.from(document.querySelectorAll(".official-references a")).map(a=>({href:a.href,target:a.target,rel:a.rel}))')
+  assert.deepEqual(refs.map(r=>r.href),['https://indiacode.gov.in/','https://www.sci.gov.in/','https://nalsa.gov.in/'])
+  assert(refs.every(r=>r.target==='_blank'&&r.rel.includes('noopener')))
+  assert((await evaluate('document.querySelector(".official-references").textContent')).includes('not citations for AI answers'))
+  checks.push('three checked portal links are independent navigation, with dates and safe external-link attributes')
+  await evaluate('document.querySelector(".assistant-notice button").click()')
+  await input('#legal-question','Explain mediation');await evaluate('document.querySelector(".send-button").click()')
+  await until('document.querySelector(".chat-message.assistant")')
+  await evaluate('document.querySelector(".conversation-save summary").click()')
+  assert(await evaluate('document.querySelectorAll(".save-actions button")[0].disabled'))
+  assert.equal(await evaluate('localStorage.getItem("better-call-ai.conversation.v1")'),null)
+  await evaluate('document.querySelector(".conversation-save input").click();document.querySelectorAll(".save-actions button")[0].click()')
+  await until('localStorage.getItem("better-call-ai.conversation.v1")')
+  const saved=await evaluate('JSON.parse(localStorage.getItem("better-call-ai.conversation.v1"))')
+  assert.equal(saved.mode,'general_information');assert.equal(saved.messages.length,2)
+  assert.deepEqual(Object.keys(saved).sort(),['messages','mode','savedAt','version'])
+  assert(saved.messages.every(m=>Object.keys(m).sort().join(',')==='content,role'))
+  checks.push('explicit save consent; persisted text has no tokens, source records or provider/approval metadata')
+  const beforeRestore=aiPosts
+  await evaluate('document.querySelector(".clear-chat").click()')
+  assert(await evaluate('!!localStorage.getItem("better-call-ai.conversation.v1")'))
+  await rpc('Page.navigate',{url});await until('document.querySelector(".assistant-notice button")')
+  assert.equal(await evaluate('document.querySelectorAll(".chat-message").length'),0)
+  assert.equal(aiPosts,beforeRestore)
+  checks.push('reload does not automatically restore or transmit stored conversations; Clear and Delete are separate')
+  await evaluate('document.querySelector(".conversation-save summary").click();document.querySelectorAll(".save-actions button")[1].click()')
+  await until('document.querySelectorAll(".chat-message").length===2')
+  assert((await evaluate('document.querySelector(".message-list").textContent')).includes('RESTORED LOCAL TEXT'))
+  assert.equal(await evaluate('document.querySelectorAll(".citation-card").length'),0)
+  assert.equal(aiPosts,beforeRestore)
+  checks.push('explicit restore labels text unverified, selects AI mode, clears source selection and makes no provider request')
+  await input('#legal-question','How does this compare?');await evaluate('document.querySelector(".send-button").click()')
+  await until('document.querySelectorAll(".chat-message.assistant").length===2')
+  assert.equal(aiRequests.at(-1).history.length,2)
+  assert.equal(aiRequests.at(-1).history[0].content,saved.messages[0].content)
+  checks.push('restored text becomes bounded untrusted history only after explicit new submission')
+  await evaluate('document.querySelector(".clear-chat").click();const d=JSON.parse(localStorage.getItem("better-call-ai.conversation.v1"));d.sources_verified=true;localStorage.setItem("better-call-ai.conversation.v1",JSON.stringify(d));document.querySelectorAll(".save-actions button")[1].click()')
+  await until('document.querySelector(".conversation-save").textContent.includes("Saved data is invalid")')
+  assert.equal(await evaluate('document.querySelectorAll(".chat-message").length'),0)
+  checks.push('tampered authority metadata is rejected rather than restored as trusted evidence')
+  await evaluate('document.querySelectorAll(".save-actions button")[2].click()')
+  assert.equal(await evaluate('localStorage.getItem("better-call-ai.conversation.v1")'),null)
+  checks.push('Delete saved copy removes only the app storage key')
+  await evaluate(`localStorage.setItem('better-call-ai.conversation.v1',JSON.stringify({version:1,mode:'general_information',savedAt:new Date().toISOString(),messages:[{role:'user',content:'SYNTHETIC question'},{role:'assistant',content:'<img data-storage-evil src=x onerror="window.__storageExecuted=true">'}]}));document.querySelectorAll('.save-actions button')[1].click()`)
+  await until('document.querySelectorAll(".chat-message").length===2')
+  assert.equal(await evaluate('!!window.__storageExecuted || !!document.querySelector("img[data-storage-evil]")'),false)
+  assert((await evaluate('document.querySelector(".message-list").textContent')).includes('<img'))
+  checks.push('restored markup is escaped plain text, with no executable elements or fake citation cards')
+  await evaluate('window.__savedGet=Storage.prototype.getItem;Storage.prototype.getItem=function(){throw new Error("SYNTHETIC storage denied")};document.querySelectorAll(".save-actions button")[1].click()')
+  await until('document.querySelector(".conversation-save").textContent.includes("storage is unavailable")')
+  await evaluate('Storage.prototype.getItem=window.__savedGet;document.querySelectorAll(".save-actions button")[2].click();document.querySelector(".clear-chat").click()')
+  checks.push('blocked browser storage produces a safe UI message without crashing chat')
+  intercept='badrefs'
+  await rpc('Fetch.enable',{patterns:[{urlPattern:'*api/references',requestStage:'Request'}]})
+  await rpc('Page.navigate',{url})
+  await until('document.querySelector(".official-references")?.textContent.includes("Reference links are unavailable")')
+  assert.equal(await evaluate('document.querySelectorAll(".official-references a").length'),0)
+  await rpc('Fetch.disable');intercept=false
+  await evaluate('document.querySelector(".official-references button").click()')
+  await until('document.querySelectorAll(".official-references a").length===3')
+  checks.push('unsafe reference URLs fail closed; retry restores only the known checked government portal links')
+  await rpc('Emulation.setDeviceMetricsOverride',{width:320,height:850,deviceScaleFactor:1,mobile:true});await pause(200)
+  assert(await evaluate('document.documentElement.scrollWidth<=innerWidth'))
+  assert.equal(chatPosts,0);assert.equal(leakedAuth,false)
+  checks.push('reference and storage controls retain 320px responsiveness, source isolation and zero bearer exposure')
+ }
  const report={synthetic_only:true,real_microphone_tested:false,live_groq:false,no_speech:noSpeech,checks,ai_posts:aiPosts,research_posts:chatPosts,authorization_exposed:leakedAuth}
  await mkdir(join(root,'frontend/.qa'),{recursive:true})
  await writeFile(join(root,'frontend/.qa/assistant-'+(noSpeech?'unsupported':'mock-voice')+'.json'),JSON.stringify(report,null,2))

@@ -62,7 +62,7 @@ export async function sendGeneralQuestion(message: string, history: GeneralTurn[
   }
   return data as GeneralAnswer
 }
-export interface Message { id: string; role: 'user' | 'assistant'; content: string; result?: Answer; demo?: DemoAnswer; general?: GeneralAnswer }
+export interface Message { id: string; role: 'user' | 'assistant'; content: string; result?: Answer; demo?: DemoAnswer; general?: GeneralAnswer; restored?: boolean }
 export function officialSource(url: string | null): string | undefined {
   if (!url) return undefined
   try {

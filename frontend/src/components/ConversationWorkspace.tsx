@@ -2,6 +2,8 @@ import { ArrowUp, MessageSquare, Scale, Trash2 } from 'lucide-react'
 import { ReadAloud, VoiceInput } from './BrowserVoice'
 import { useEffect, useRef, useState } from 'react'
 import { apiUrl } from '../api'
+import ConversationSaveControls from './ConversationSaveControls'
+import type { SavedConversation } from '../conversationStorage'
 import { sendDemoQuestion, sendGeneralQuestion, sendQuestion, type GeneralTurn, type Answer, type ChatStatus, type Message } from '../chat'
 
 const starters = [
@@ -115,6 +117,12 @@ export default function ConversationWorkspace({ connected, research, onSelect }:
     setBusy(false); setMessages([]); setDraft(''); setError(''); setFailedQuestion('')
     generalHistory.current = []; conversation.current = null; onSelect(null); input.current?.focus()
   }
+  function restoreSaved(saved: SavedConversation) {
+    clear()
+    setAiMode(saved.mode === 'general_information'); setDemoMode(saved.mode === 'synthetic_demo')
+    setMessages(saved.messages.map(m => ({ ...m, id: crypto.randomUUID(), restored: true })))
+    generalHistory.current = saved.mode === 'general_information' ? saved.messages.slice(-6) : []
+  }
   const unavailable = !connected ? 'Backend disconnected. Use Retry in the connection indicator.'
     : isAI ? (assistant.available ? '' : assistant.message) : isDemo ? (demoAvailable ? '' : 'Synthetic demo unavailable.') : statusError ? 'Chat service unavailable. Refresh the backend connection to retry.'
       : !status ? 'Checking research availability...' : !status.available ? status.research_message : ''
@@ -153,9 +161,11 @@ export default function ConversationWorkspace({ connected, research, onSelect }:
         {messages.map(m => <article key={m.id} className={'chat-message ' + m.role}>
           <strong>{m.role === 'user' ? 'You' : 'Better Call AI'}</strong>
           {m.result && <span className="evidence-badge">{m.result.evidence_status.replaceAll('_', ' ')}</span>}
+          {m.restored && <span className="evidence-badge">RESTORED LOCAL TEXT · UNVERIFIED</span>}
           {m.general && <span className="evidence-badge">AI GENERAL INFORMATION · SOURCES NOT VERIFIED</span>}
           {m.demo && <span className="evidence-badge">SYNTHETIC DEMO · NOT LEGAL EVIDENCE</span>}
           <p>{m.content}</p>
+          {m.restored && <ReadAloud text={m.content} />}
           {m.general && <><p className="answer-mode">{m.general.response_kind === 'generated' ? 'Groq-generated explanation' : 'Safety boundary — no model call'} · No sources verified · Currentness unknown</p><ReadAloud text={m.content} /></>}
           {m.demo && <><p className="answer-mode">{m.demo.provider_status === 'selected' ? 'AI-selected synthetic example' : m.demo.provider_status === 'fallback' ? 'Provider unavailable or invalid selection; deterministic sample' : 'Deterministic synthetic sample'} · No official citations</p><ReadAloud text={m.content} /></>}
           {m.result && <>
@@ -167,6 +177,7 @@ export default function ConversationWorkspace({ connected, research, onSelect }:
         </article>)}
         <div ref={end} />
       </div>}
+      <ConversationSaveControls mode={isAI ? "general_information" : isDemo ? "synthetic_demo" : null} messages={messages} busy={busy} onRestore={restoreSaved} />
       {busy && <button className="source-select" type="button" onClick={() => { sequence.current++; controller.current?.abort(); sending.current = false; setBusy(false); setError('Request cancelled.'); setFailedQuestion('') }}>Cancel request</button>}
       {busy && <p className="chat-progress" role="status">{isAI ? 'Preparing unverified general information...' : isDemo ? 'Preparing a synthetic example...' : 'Retrieving and checking source evidence...'}</p>}
       {error && <div className="chat-error" role="alert"><p>{error}</p>{failedQuestion && <button type="button" disabled={busy || !connected} onClick={() => void submit(failedQuestion, true)}>Retry question</button>}</div>}
@@ -183,7 +194,7 @@ export default function ConversationWorkspace({ connected, research, onSelect }:
         </div>
         <p className="composer-notice" id="answer-availability" role="status">{unavailable || (isAI ? 'AI-generated general information — not source-verified legal advice' : isDemo ? 'Fictional/synthetic examples only. No verified Indian legal advice.' : status?.answer_mode)}{status && !status.retrieval.passages && status.retrieval.corpus_kind !== 'public' && ' No local corpus is loaded; unsupported questions receive an insufficient-evidence response.'}</p>
         {!isAI && !isDemo && status && status.retrieval.passages > 0 && <p className="answer-mode">{status.retrieval.passages} unapproved archival selections · {status.retrieval.mode.toUpperCase()} · limited coverage</p>}
-        <p className="draft-privacy" id="draft-privacy">{isAI ? 'Your question and up to six recent messages go to the backend and Groq. Nothing is source-verified. Avoid confidential information. History stays in browser memory; Clear or reload removes it. ' : isDemo ? 'Only your submitted question goes to the demo backend and optionally Groq to select a synthetic example. Avoid personal or confidential information. No research evidence is accessed. ' : publicationPending ? 'Drafts stay in this browser and cannot be submitted while publication is pending. ' : 'Submitted questions go to the backend and, when evidence is available and configured, Groq. '}{isAI ? '' : isDemo ? 'History stays in browser memory (40 messages); no demo history is sent. Clear or reload to remove it.' : 'History stays in browser memory (40 messages, six recent turns sent). Clear or reload to remove it.'}</p>
+        <p className="draft-privacy" id="draft-privacy">{isAI ? 'Your question and up to six recent messages go to the backend and Groq. Nothing is source-verified. Avoid confidential information. Active history stays in memory; optional device saving below persists until Delete saved copy. ' : isDemo ? 'Only your submitted question goes to the demo backend and optionally Groq to select a synthetic example. Avoid personal or confidential information. No research evidence is accessed. ' : publicationPending ? 'Drafts stay in this browser and cannot be submitted while publication is pending. ' : 'Submitted questions go to the backend and, when evidence is available and configured, Groq. '}{isAI ? '' : isDemo ? 'Active history stays in memory (40 messages); no demo history is sent. Optional device saving persists until Delete saved copy.' : 'History stays in browser memory (40 messages, six recent turns sent). Clear or reload to remove it.'}</p>
         <VoiceInput key={voiceEpoch} onText={setDraft} disabled={busy} />
       </form>
     </section>

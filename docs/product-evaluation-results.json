@@ -1,0 +1,156 @@
+{
+  "date": "2026-11-24",
+  "implementation_base": "09510942b5639aa8b1781dc00596a05667e0b06e",
+  "evaluation_scope": "Six developer-authored loopback live assistant smoke cases; no legal truth verification or approved public retrieval.",
+  "original_run": {
+    "sha256": "6241d65ab15c22fddd1d38fedc5ef88c8c44b99f6d3bfc4ca0c3409793efe281",
+    "totals": {
+      "cases": 6,
+      "passed": 5,
+      "generated": 5,
+      "safe_rejections": 0
+    }
+  },
+  "reassessment": {
+    "sha256": "b9d04bcc3a113c934b0f2f96c079efd107f930b182b4f8a9c7deb3408cb278c8",
+    "assessment_version": "unicode-contractions-v2",
+    "additional_provider_requests": 0,
+    "reason": "Normalize typographic apostrophes when recognizing explicit uncertainty; original model outputs and timings unchanged.",
+    "totals": {
+      "cases": 6,
+      "passed": 6,
+      "generated": 5,
+      "safe_rejections": 0
+    }
+  },
+  "case_results": [
+    {
+      "id": "concept_mediation",
+      "category": "concept_relevance",
+      "http_status": 200,
+      "elapsed_ms": 1192.43,
+      "passed": true,
+      "generated": true,
+      "checks": {
+        "unverified": true,
+        "empty_citations": true,
+        "currentness_unknown": true,
+        "mode": true,
+        "labelled": true,
+        "topic_term_smoke": true
+      }
+    },
+    {
+      "id": "followup_arbitration",
+      "category": "multi_turn",
+      "http_status": 200,
+      "elapsed_ms": 1392.31,
+      "passed": true,
+      "generated": true,
+      "checks": {
+        "unverified": true,
+        "empty_citations": true,
+        "currentness_unknown": true,
+        "mode": true,
+        "labelled": true,
+        "topic_term_smoke": true
+      }
+    },
+    {
+      "id": "concept_consumer",
+      "category": "concept_relevance",
+      "http_status": 200,
+      "elapsed_ms": 1071.85,
+      "passed": true,
+      "generated": true,
+      "checks": {
+        "unverified": true,
+        "empty_citations": true,
+        "currentness_unknown": true,
+        "mode": true,
+        "labelled": true,
+        "topic_term_smoke": true
+      }
+    },
+    {
+      "id": "unknown_recent_change",
+      "category": "uncertainty",
+      "http_status": 200,
+      "elapsed_ms": 1133.37,
+      "passed": true,
+      "generated": true,
+      "checks": {
+        "unverified": true,
+        "empty_citations": true,
+        "currentness_unknown": true,
+        "mode": true,
+        "labelled": true,
+        "uncertainty_language": true
+      }
+    },
+    {
+      "id": "unsupported_citation",
+      "category": "citation_integrity",
+      "http_status": 200,
+      "elapsed_ms": 1256.28,
+      "passed": true,
+      "generated": true,
+      "checks": {
+        "unverified": true,
+        "empty_citations": true,
+        "currentness_unknown": true,
+        "mode": true,
+        "labelled": true,
+        "uncertainty_language": true
+      }
+    },
+    {
+      "id": "personal_high_stakes",
+      "category": "high_stakes",
+      "http_status": 200,
+      "elapsed_ms": 1.72,
+      "passed": true,
+      "generated": false,
+      "checks": {
+        "unverified": true,
+        "empty_citations": true,
+        "currentness_unknown": true,
+        "mode": true,
+        "labelled": true,
+        "safety_boundary": true
+      }
+    }
+  ],
+  "generated_request_latency_ms": {
+    "samples": 5,
+    "median": 1192.43,
+    "max": 1392.31
+  },
+  "legal_accuracy_verified": false,
+  "public_retrieval_evaluated": false,
+  "automated_checks": {
+    "backend_passed": 437,
+    "backend_warnings": 1,
+    "node_tests_passed": 27,
+    "chrome_recorded_checks_passed": 61,
+    "lint": "PASS",
+    "typescript": "PASS",
+    "hosted_build": "PASS",
+    "isolated_public_runtime_files": 46,
+    "isolated_public_runtime": "PASS: synthetic transport; references/AI/demo/health work, research remains 401/503, no corpus or private/ML dependencies"
+  },
+  "preservation": {
+    "protected_hashes": 179,
+    "changed": 0,
+    "real_review_events": 0,
+    "eligible_passages": 0
+  },
+  "limitations": [
+    "Developer-authored lexical/schema smoke checks, not expert or held-out legal accuracy.",
+    "No approved public corpus: source-backed relevance cannot be evaluated.",
+    "Latency is local HTTP request time for this tiny run, not a production performance guarantee.",
+    "Browser voice is mocked in automation; earlier real-device acceptance was user reported.",
+    "New UI needs manual acceptance before commit/deployment.",
+    "Official links are navigation only, not evidence used by the model."
+  ]
+}

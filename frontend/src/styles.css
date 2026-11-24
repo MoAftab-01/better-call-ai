@@ -323,3 +323,11 @@ details summary { cursor:pointer; line-height:1.8; }
 .assistant-notice { padding: 16px 20px; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
 .assistant-notice p { line-height: 1.7; color: #eee4ca; font-size: .85rem; }
 .assistant-notice button { max-width: 100%; white-space: normal; text-align: left; }
+
+.conversation-save { padding: 14px 20px; border-top: 1px solid var(--border); overflow-wrap: anywhere; }
+.conversation-save p { font-size: .8rem; line-height: 1.6; color: var(--text-muted, #bdc5d0); }
+.conversation-save label { display: flex; gap: 8px; align-items: flex-start; font-size: .8rem; line-height: 1.6; }
+.save-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.save-actions button { max-width: 100%; white-space: normal; text-align: left; }
+.reference-link { padding: 12px 0; border-top: 1px solid var(--border); overflow-wrap: anywhere; }
+.reference-link a { color: #e6c677; }

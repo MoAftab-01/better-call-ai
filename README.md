@@ -8,13 +8,13 @@ An Indian-law-themed chat and browser voice portfolio project, built around expl
 
 ## v1.0 status
 
-**Pending local upgrade:** a separately labelled, opt-in Groq general-information assistant is implemented for review. It is not deployed by this change. See [configuration, acceptance checks and limitations](docs/general-assistant.md). The v1.0 deployment below remains the deterministic release until separately authorized.
+**Live:** Groq-powered general-information conversation, browser voice, and an independent deterministic fallback. The new checked-reference directory and explicit device save/restore controls in this local update await deployment approval. See [current product readiness and measured evaluation](docs/product-readiness.md) and [AI configuration](docs/general-assistant.md).
 
-**An isolated synthetic chat and browser voice demo is live.** Choose **Try synthetic demo**, then try `Fictional rent receipt exercise`, `Fictional parcel exercise`, or `Fictional document timeline`.
+**AI Assistant — General Information** provides dynamically generated, explicitly unverified explanations and contextual follow-ups. For fixed fictional examples, choose **Try synthetic demo**, then try `Fictional rent receipt exercise`, `Fictional parcel exercise`, or `Fictional document timeline`.
 
-The production demo uses deterministic, original fictional examples. It does **not** generate open-ended legal answers, search official documents, or supply legal citations. **Public legal research remains unavailable pending separate source publication approval.** This is an engineering demonstration, not a production legal-advice service.
+The synthetic fallback uses deterministic, original fictional examples. The separate AI Assistant generates general information without searching official documents or supplying verified legal citations. **Public legal research remains unavailable pending separate source publication approval.** This is an engineering demonstration, not a production legal-advice service.
 
-Groq is optional and is **not enabled for the deterministic production release**. Neither a provider key nor demo access can authorize publication of legal evidence.
+Groq powers the AI Assistant; the deterministic fallback does not call a model. Neither a provider key nor demo access can authorize publication of legal evidence.
 
 ## Product screenshots
 
@@ -31,6 +31,9 @@ Actual screenshots of the deployed website, captured on 23 November 2026 after s
 
 ## Public demo features
 
+- Groq-generated general-information explanations and bounded contextual follow-ups; no source verification is implied.
+- New local update: explicitly saved/restored/deleted device-only text and checked official navigation links, separate from answer citations.
+
 - Explicit opt-in to **Demo mode — synthetic examples**, with a disclaimer on every response.
 - Three fictional paperwork scenarios; out-of-scope questions receive a scope explanation.
 - Typed chat, loading, errors, retry, cancellation, and clear conversation.
@@ -43,7 +46,9 @@ Actual screenshots of the deployed website, captured on 23 November 2026 after s
 
 ```mermaid
 flowchart LR
-    UI[React / TypeScript on Vercel] -->|HTTPS: demo routes| API[FastAPI on Render]
+    UI[React / TypeScript on Vercel] -->|HTTPS: assistant and demo routes| API[FastAPI on Render]
+    API --> General[General-information assistant]
+    General --> Groq[Groq: no verified sources]
     API --> Demo[Isolated synthetic demo service]
     Demo --> Samples[Three original fictional examples]
     Voice[Browser speech APIs] --> UI
@@ -57,7 +62,7 @@ flowchart LR
 | Backend | Python 3.12, FastAPI, Pydantic validation, Uvicorn, HTTPX |
 | Public hosting | Vercel frontend; Render backend with one worker and public/BM25 configuration |
 | Demo | Fixed server-authored samples; no corpus, embeddings, FAISS, or model download |
-| Optional provider | Groq selects a synthetic scenario ID; server controls all response text |
+| AI provider | Groq generates unverified general information; optional synthetic mode only selects a fixed scenario ID |
 | Verification | pytest, Node guard tests, installed-Chrome/CDP browser tests |
 
 **Separate local research pipeline:** manifest-based PDF/TXT ingestion, extraction QA, hash-bound passage review, versioned evidence bindings, BM25 and optional Sentence Transformers/FAISS hybrid retrieval, and server-validated source citations. Its 555 archival selections are unapproved evidence, not part of this public demo. Exact private source files are excluded from Git and the runtime package. A fresh clone can run the synthetic demo without them; full real-source verification cannot.
@@ -84,7 +89,7 @@ Recognition is configured for `en-IN`. Availability, accuracy, voices, and permi
 - **Publication isolation:** enabling the demo does not alter signatures, pins, manifests, review history, or legal-evidence approvals. Public mode never falls back to the private corpus.
 - **Separate access boundaries:** the narrow synthetic endpoint is public. Production research retains bearer authentication and fails closed without a valid, explicitly approved public corpus. No privileged token belongs in frontend code or `VITE_*` variables.
 - **Bounded requests:** demo limit of 10 attempts/minute/process, shared concurrency of two, 16,000-byte body cap, 2,000-character questions, and bounded timeouts. These are implementation limits, not performance claims or distributed abuse protection.
-- **Conversation privacy:** up to 40 messages remain in browser memory; demo history is not sent. Clear/reload removes local conversation state. The backend does not persist conversations. Avoid personal or confidential information; hosting and speech-provider processing remain separate privacy considerations.
+- **Conversation privacy:** up to 40 messages remain in browser memory; demo history is not sent. Clear/reload removes active conversation state. In the new local update, opt-in saved copies persist on this browser until **Delete saved copy**; storage is unencrypted and must not contain confidential details. The backend does not persist conversations. Avoid personal or confidential information; hosting and speech-provider processing remain separate privacy considerations.
 - **Legal scope:** synthetic samples establish no rights, remedies, statutory deadlines, current law, or case applicability. No verified official citations, comprehensive coverage, legal certification, or lawyer-client relationship is claimed. Consult a qualified legal professional for your circumstances.
 
 Corpus publication authorization and legal-passage approval are separate decisions. Neither has been granted by releasing this demo. See [publication review](docs/publication-review.md) and [public-corpus security/deployment](docs/public-corpus-deployment.md).
@@ -143,6 +148,9 @@ Open **http://127.0.0.1:5173/**; backend health is **http://127.0.0.1:8001/api/h
 | --- | --- |
 | `GET /` | Welcome response |
 | `GET /api/health` | Process health, `200`; does not imply research readiness |
+| `GET /api/assistant/status` | General AI configuration/availability, without secrets |
+| `POST /api/assistant/chat` | Groq-generated general information with bounded history, empty citations and unverified labels |
+| `GET /api/references` | New local update: three checked official navigation links, not answer citations |
 | `GET /api/demo/status` | Demo enabled flag, provider mode, and isolation status |
 | `POST /api/demo/chat` | Synthetic-only question/response; empty citations |
 | `GET /api/chat/status` | Research availability and publication-pending state |
@@ -158,6 +166,8 @@ Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8001/api/demo/chat' `
 ```
 
 ## Automated testing and verification
+
+Latest local update: **437 backend tests**, **27 Node guard/storage tests**, and **61 recorded Chrome checks** passed; frontend lint, TypeScript and hosted build passed. A six-case live smoke run produced five generated answers and one safety boundary. See [methods, exact measurements and limitations](docs/product-readiness.md) and the [machine-readable summary](docs/product-evaluation-results.json). These are not legal-accuracy or production-SLA metrics.
 
 The pre-commit run for demo commit [`fb6f6f8`](https://github.com/MoAftab-01/better-call-ai/commit/fb6f6f82c2242ec05ae1976786f9488025d962a5) recorded:
 
@@ -187,7 +197,7 @@ Full private-source checks need the exact separate bundle; synthetic tests and t
 
 ## Current limitations
 
-- Three fixed fictional scenarios; no open-ended legal reasoning or verified legal answers.
+- The fallback has three fixed fictional scenarios. AI conversation is dynamic, but unverified prose can be wrong; no verified legal answers are claimed.
 - Public research, source citations and legal corpus distribution remain unavailable.
 - Local archival evidence has unresolved extraction, currentness and applicability limitations; hashes prove byte identity, not legal correctness.
 - Browser/device support and speech-provider connectivity vary. No telephony or multilingual answering.

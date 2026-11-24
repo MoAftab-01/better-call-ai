@@ -15,6 +15,7 @@ from starlette.concurrency import run_in_threadpool
 
 from .demo import DemoRequest, DemoResponse, DemoService
 from .general import GeneralRequest, GeneralResponse, GeneralService
+from .references import reference_directory
 from .models import ChatRequest, ChatResponse
 from .provider import ProviderError
 from .service import ChatService
@@ -212,6 +213,10 @@ def create_app(service=None, *, demo_service=None, general_service=None):
             return error("demo_timeout", 504)
         except Exception:
             return error("demo_unavailable", 503)
+
+    @app.get("/api/references")
+    def references():
+        return reference_directory()
 
     @app.get("/api/assistant/status")
     def assistant_status():
