@@ -18,6 +18,7 @@
     "backend/chat/__init__.py",
     "backend/chat/api.py",
     "backend/chat/demo.py",
+    "backend/chat/general.py",
     "backend/chat/models.py",
     "backend/chat/provider.py",
     "backend/chat/service.py",

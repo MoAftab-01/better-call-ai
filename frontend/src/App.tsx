@@ -31,7 +31,7 @@ export default function App() {
             <WelcomePanel publicationPending={publicationPending} />
             {publicationPending && <div className="publication-notice" role="status">
               <CircleAlert size={20} aria-hidden="true" />
-              <div><h2>Source publication pending</h2><p>The website is online. Legal research is not available yet. Official-source publication must be authorized before answers and citations can be provided. No private evidence is used by this public website.</p></div>
+              <div><h2>Source publication pending</h2><p>The website is online. Legal research is not available yet. Source-backed legal research and official citations require separate publication authorization. Any enabled AI Assistant provides unverified general information only. No private evidence is used by this public website.</p></div>
             </div>}
             {connection.state === 'disconnected' && (
               <div className="connection-notice" role="status">

@@ -41,7 +41,28 @@ export async function sendDemoQuestion(message: string, signal: AbortSignal): Pr
   }
   return data as DemoAnswer
 }
-export interface Message { id: string; role: 'user' | 'assistant'; content: string; result?: Answer; demo?: DemoAnswer }
+export interface GeneralAnswer {
+  mode: 'general_information'; answer: string; disclaimer: string; sources_verified: false
+  citations: never[]; legal_currentness: 'unknown'; response_kind: 'generated' | 'safety_boundary'
+  requires_professional_help: boolean
+}
+export interface GeneralTurn { role: 'user' | 'assistant'; content: string }
+export async function sendGeneralQuestion(message: string, history: GeneralTurn[], signal: AbortSignal): Promise<GeneralAnswer> {
+  const response = await fetch(apiUrl('/api/assistant/chat'), {
+    method: 'POST', signal, headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({ message, history: history.slice(-6).map(t => ({ role: t.role, content: t.content.slice(0, 1200) })) }),
+  })
+  let data
+  try { data = await response.json() } catch { throw new Error('The AI Assistant returned an unreadable response. Try the synthetic demo.') }
+  if (!response.ok) throw new Error(data?.error?.message || 'AI Assistant unavailable. Retry or choose the synthetic demo.')
+  if (data.mode !== 'general_information' || data.sources_verified !== false || data.legal_currentness !== 'unknown' ||
+      typeof data.answer !== 'string' || typeof data.disclaimer !== 'string' || !Array.isArray(data.citations) || data.citations.length ||
+      !['generated', 'safety_boundary'].includes(data.response_kind) || typeof data.requires_professional_help !== 'boolean') {
+    throw new Error('Unverified AI response failed validation. No answer was displayed.')
+  }
+  return data as GeneralAnswer
+}
+export interface Message { id: string; role: 'user' | 'assistant'; content: string; result?: Answer; demo?: DemoAnswer; general?: GeneralAnswer }
 export function officialSource(url: string | null): string | undefined {
   if (!url) return undefined
   try {

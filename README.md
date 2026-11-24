@@ -8,6 +8,8 @@ An Indian-law-themed chat and browser voice portfolio project, built around expl
 
 ## v1.0 status
 
+**Pending local upgrade:** a separately labelled, opt-in Groq general-information assistant is implemented for review. It is not deployed by this change. See [configuration, acceptance checks and limitations](docs/general-assistant.md). The v1.0 deployment below remains the deterministic release until separately authorized.
+
 **An isolated synthetic chat and browser voice demo is live.** Choose **Try synthetic demo**, then try `Fictional rent receipt exercise`, `Fictional parcel exercise`, or `Fictional document timeline`.
 
 The production demo uses deterministic, original fictional examples. It does **not** generate open-ended legal answers, search official documents, or supply legal citations. **Public legal research remains unavailable pending separate source publication approval.** This is an engineering demonstration, not a production legal-advice service.

@@ -14,12 +14,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.concurrency import run_in_threadpool
 
 from .demo import DemoRequest, DemoResponse, DemoService
+from .general import GeneralRequest, GeneralResponse, GeneralService
 from .models import ChatRequest, ChatResponse
 from .provider import ProviderError
 from .service import ChatService
 
 logger = logging.getLogger("kanoon.chat")
 ERRORS = {
+    "assistant_disabled": "The AI Assistant is disabled. The synthetic demo may still be available.",
+    "assistant_rate_limited": "AI Assistant limit reached. Please retry later or use the synthetic demo.",
+    "assistant_origin_denied": "This browser origin is not allowed to use the AI Assistant.",
+    "provider_not_configured": "AI Assistant is unavailable: the operator must configure Groq. You can use the synthetic demo.",
     "demo_disabled": "The synthetic demo is not enabled.",
     "demo_origin_denied": "This browser origin is not allowed to use the demo.",
     "demo_rate_limited": "Demo limit reached. Wait one minute before retrying.",
@@ -40,7 +45,7 @@ ERRORS = {
 }
 
 
-def create_app(service=None, *, demo_service=None):
+def create_app(service=None, *, demo_service=None, general_service=None):
     app = FastAPI(title="Better Call AI", description="Archival research workspace; public source publication is required. No current-law certification.")
     app.state.chat = service
     lock, arrivals = threading.Lock(), deque()
@@ -50,6 +55,16 @@ def create_app(service=None, *, demo_service=None):
         raise ValueError("DEMO_PROVIDER must be deterministic or groq")
     demo = demo_service if demo_service is not None else DemoService(demo_provider == "groq")
     demo_arrivals = deque()
+    assistant_enabled = os.environ.get("AI_ASSISTANT_ENABLED", "false") == "true"
+    general = general_service if general_service is not None else GeneralService()
+    def bounded_setting(name, default, maximum):
+        value = int(os.environ.get(name, str(default)))
+        if not 1 <= value <= maximum:
+            raise ValueError(name + " is outside supported bounds")
+        return value
+    assistant_rpm = bounded_setting("AI_ASSISTANT_RPM", 6, 30)
+    assistant_daily = bounded_setting("AI_ASSISTANT_DAILY_LIMIT", 100, 1000)
+    assistant_arrivals = deque()
     environment = os.environ.get("KANOON_ENV", "local")
     if environment not in {"local", "production"}:
         raise ValueError("KANOON_ENV must be local or production")
@@ -82,7 +97,25 @@ def create_app(service=None, *, demo_service=None):
         nonlocal active
         # Bound actual streamed body bytes, including chunked requests, before JSON parsing.
         is_demo = request.url.path == "/api/demo/chat" and request.method == "POST"
-        guarded = (request.url.path == "/api/chat" or is_demo) and request.method == "POST"
+        is_general = request.url.path == "/api/assistant/chat" and request.method == "POST"
+        is_public = is_demo or is_general
+        guarded = (request.url.path == "/api/chat" or is_public) and request.method == "POST"
+        if is_general:
+            if not assistant_enabled:
+                return error("assistant_disabled", 404)
+            origin = request.headers.get("Origin")
+            local_origin = (not production and origin and urlparse(origin).scheme == "http"
+                and urlparse(origin).hostname in {"127.0.0.1", "localhost"}
+                and request.client is not None and request.client.host in {"127.0.0.1", "::1"})
+            if origin and origin not in origins and not local_origin:
+                return error("assistant_origin_denied", 403)
+            now = time.monotonic()
+            with lock:
+                while assistant_arrivals and assistant_arrivals[0] < now - 86400:
+                    assistant_arrivals.popleft()
+                if len(assistant_arrivals) >= assistant_daily or sum(t >= now - 60 for t in assistant_arrivals) >= assistant_rpm:
+                    return error("assistant_rate_limited", 429, 60)
+                assistant_arrivals.append(now)
         if is_demo:
             if not demo_enabled:
                 return error("demo_disabled", 404)
@@ -101,7 +134,7 @@ def create_app(service=None, *, demo_service=None):
                     return error("demo_rate_limited", 429, 60)
                 demo_arrivals.append(now)
         if guarded:
-            if production and not is_demo:
+            if production and not is_public:
                 if not auth_ready:
                     return error("deployment_not_configured", 503)
                 supplied = request.headers.get("Authorization", "")
@@ -179,6 +212,25 @@ def create_app(service=None, *, demo_service=None):
             return error("demo_timeout", 504)
         except Exception:
             return error("demo_unavailable", 503)
+
+    @app.get("/api/assistant/status")
+    def assistant_status():
+        return {"enabled": assistant_enabled, "available": assistant_enabled and general.configured,
+            "mode": "general_information", "sources_verified": False,
+            "message": "AI-generated general information — not source-verified legal advice." if general.configured
+                else ERRORS["provider_not_configured"]}
+
+    @app.post("/api/assistant/chat", response_model=GeneralResponse)
+    async def assistant_chat(request: GeneralRequest):
+        try:
+            async with asyncio.timeout(22):
+                return await general.answer(request)
+        except (TimeoutError, ProviderError) as exc:
+            return error("provider_timeout" if isinstance(exc, TimeoutError) else exc.code,
+                504 if isinstance(exc, TimeoutError) else exc.status,
+                getattr(exc, "retry_after", None))
+        except Exception:
+            return error("provider_unavailable", 503)
 
     @app.post("/api/chat", response_model=ChatResponse)
     async def chat(request: ChatRequest, chat: ChatService = Depends(get_service)):

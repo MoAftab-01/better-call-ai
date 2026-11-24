@@ -319,3 +319,7 @@ details summary { cursor:pointer; line-height:1.8; }
 
 .demo-notice { padding: 16px 20px; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
 .demo-notice p { line-height: 1.7; color: #eee4ca; font-size: .85rem; }
+
+.assistant-notice { padding: 16px 20px; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+.assistant-notice p { line-height: 1.7; color: #eee4ca; font-size: .85rem; }
+.assistant-notice button { max-width: 100%; white-space: normal; text-align: left; }
