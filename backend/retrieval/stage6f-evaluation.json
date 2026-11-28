@@ -1,0 +1,303 @@
+{
+  "cases": [
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "child-age-text",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Find the original BNS paragraph concerning a child under seven years of age.",
+      "required_references": [
+        "bns-child"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "summons-service-text",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Locate original BNS text about intentionally preventing service or lawful affixing of a summons, notice or order from a competent public servant.",
+      "required_references": [
+        "bns-service"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "procedural-error-text",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Read the original BNSS paragraph on error, omission or irregularity in proceedings, failure of justice, and objections raised at an earlier stage.",
+      "required_references": [
+        "bnss-errors"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "judicial-control-text",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "What does original BNSS text say about Chief Judicial Magistrates, Sessions Judges and distribution of business among subordinate Judicial Magistrates?",
+      "required_references": [
+        "bnss-judicial"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "oral-evidence-exception",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Quote original BSA text about facts proved by oral evidence, retaining the exception for contents of documents.",
+      "required_references": [
+        "bsa-oral"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "document-producer-status",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Find the original BSA paragraph on a person summoned to produce a document, becoming a witness and cross-examination.",
+      "required_references": [
+        "bsa-producer"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "service-and-error-reading",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Compare original BNS prevention of summons service with original BNSS error or irregularity causing failure of justice.",
+      "required_references": [
+        "bns-service",
+        "bnss-errors"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "oral-and-producer-reading",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Compare original BSA facts proved by oral evidence with original BSA treatment of a person summoned to produce a document as a witness.",
+      "required_references": [
+        "bsa-oral",
+        "bsa-producer"
+      ]
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "financial-year-child-rule",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Does original BNS text concerning children establish the rule for the next financial year?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "displaced-document-exception",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Have new instruments displaced the BSA exception for contents of documents?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "intervening-schedule-instrument",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Has an intervening instrument set aside the BNSS First Schedule exception?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "binding-procedural-position",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Are the original BNSS error and omission rules currently binding?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "academic-year-oral-rule",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Can the archive certify the BSA oral-evidence rule for the coming academic year?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_evidence",
+      "fault": null,
+      "id": "unprovided-dna-standard",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Compare original BNS child-age text with BSA software DNA testing accuracy standards.",
+      "required_references": [
+        "bns-child"
+      ]
+    },
+    {
+      "expected_status": "insufficient_evidence",
+      "fault": null,
+      "id": "legacy-service-comparison",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Compare original BNSS procedural-error text with IPC punishment for obstructing public service.",
+      "required_references": [
+        "bnss-errors"
+      ]
+    },
+    {
+      "expected_status": "clarification_required",
+      "fault": null,
+      "id": "unspecified-reference",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Which of those rules did you mean?",
+      "required_references": []
+    },
+    {
+      "expected_status": "clarification_required",
+      "fault": null,
+      "id": "unspecified-quotation",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Quote the relevant source.",
+      "required_references": []
+    },
+    {
+      "expected_status": "source_integrity_failed",
+      "fault": "wrong_source_url",
+      "id": "service-provenance-fault",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Inspect the original BNS summons-service paragraph with substituted provenance.",
+      "required_references": [
+        "bns-service"
+      ]
+    },
+    {
+      "expected_status": "source_integrity_failed",
+      "fault": "invalid_hash",
+      "id": "oral-hash-fault",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Inspect the original BSA oral-evidence paragraph with an invalid source hash.",
+      "required_references": [
+        "bsa-oral"
+      ]
+    },
+    {
+      "expected_status": "source_integrity_failed",
+      "fault": "missing_qualifier",
+      "id": "schedule-qualification-fault",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Inspect the original BNSS commencement paragraph with its qualification removed.",
+      "required_references": [
+        "bnss-notice"
+      ]
+    }
+  ],
+  "catalog_sha256": "db74f8c4ad5e496a490a585ce2a04e46368f6bae457a121d5a30e9f8c6a399b0",
+  "evaluation_version": "stage6f-agent-v1",
+  "frozen_stage6_sha256": "f4fd962a805a41cd7b642c7f05a2c1dd45deff5ac1aeb264cd225eeeeb3693f1",
+  "frozen_stage6c_sha256": "0bba841b65898e48aeb2c39ffd9e1d8e234440a71e1cc5c421b64f5affe4fc86",
+  "frozen_stage6d_sha256": "79c1a8e38b5c773d1f7252d67c1346c80e70a13c82dff58376132aab7912946e",
+  "frozen_stage6e_sha256": "d11db3e1b4c0d23abb5e9ffca306d050ccd78400985a68f4cceb1275494ee68d",
+  "human_approved": false,
+  "index_version": "6cc6f59ef5d2799570881a1182e36f1e2d36056a7055fac3cb675ca2532a9823",
+  "label_method": "Agent-authored source-first cases AFTER policy/test finalization; six new existing source topics, eight positive questions and twelve negatives. Text-only source inspection; independent human/visual/rights/currentness review pending. Freeze before any candidate query; no tuning afterward.",
+  "qa_sha256": "236fec73f5dbcc37e31d253bc916dfd3076f8412cb196c13aba86acb6a07a491",
+  "references": {
+    "bns-child": {
+      "candidate_id": "passage_affa71305df17f7a875e394064d51b0bec6bd100f69eb7030d6b4a9dd4077021",
+      "document_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574",
+      "processed_sha256": "26d15d1a54c64ba86bb17a776c9de26a73a727f3b245a066bd92f093b3e051fb",
+      "rationale": "Source-first reading of an existing exact selection before query retrieval. Full context/cross-references, visual extraction, rights and currentness require human review.",
+      "raw_sha256": "67c92f7869420685e6cdc29b1bdde19fff91312b10241b3ed3e1163c5399600b",
+      "span": {
+        "end_line": 1,
+        "page_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574:page:000012",
+        "physical_page": 12,
+        "start_line": 1,
+        "text_sha256": "3f3e2bef76cea6c123ffd16bdbc83d40604c001bc66e7242fe2461f5a840a21a"
+      }
+    },
+    "bns-service": {
+      "candidate_id": "passage_6350d451e236d761a9ec13c5cd0c552c52be4052012fbccbeb939a62180203df",
+      "document_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574",
+      "processed_sha256": "26d15d1a54c64ba86bb17a776c9de26a73a727f3b245a066bd92f093b3e051fb",
+      "rationale": "Source-first reading of an existing exact selection before query retrieval. Full context/cross-references, visual extraction, rights and currentness require human review.",
+      "raw_sha256": "67c92f7869420685e6cdc29b1bdde19fff91312b10241b3ed3e1163c5399600b",
+      "span": {
+        "end_line": 25,
+        "page_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574:page:000059",
+        "physical_page": 59,
+        "start_line": 12,
+        "text_sha256": "b20f469ed2ef94979f55f2407aa6e742ad3ea7ef9c86699ce190cffbb040e6b0"
+      }
+    },
+    "bnss-errors": {
+      "candidate_id": "passage_2442efe3992bfb651ee608798de14cc4bbd1c5527e1f1405de21bb4dd8c85b4c",
+      "document_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6",
+      "processed_sha256": "579641be069ec37ce1324e4773604c572b4301b9cb97b3d410c90f15d714596e",
+      "rationale": "Source-first reading of an existing exact selection before query retrieval. Full context/cross-references, visual extraction, rights and currentness require human review.",
+      "raw_sha256": "5e60e2afe30d0fe7eca4f8126301146b76c86a444e690581f81eb564843517fe",
+      "span": {
+        "end_line": 35,
+        "page_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6:page:000153",
+        "physical_page": 153,
+        "start_line": 25,
+        "text_sha256": "c53c0a681bff642ccfb1e766200c544eb1e992572249ebbf0494a14222073604"
+      }
+    },
+    "bnss-judicial": {
+      "candidate_id": "passage_f5895637e51cfae783d45206c50014d18a3e890c2cca03ea73e4118b8561b680",
+      "document_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6",
+      "processed_sha256": "579641be069ec37ce1324e4773604c572b4301b9cb97b3d410c90f15d714596e",
+      "rationale": "Source-first reading of an existing exact selection before query retrieval. Full context/cross-references, visual extraction, rights and currentness require human review.",
+      "raw_sha256": "5e60e2afe30d0fe7eca4f8126301146b76c86a444e690581f81eb564843517fe",
+      "span": {
+        "end_line": 31,
+        "page_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6:page:000006",
+        "physical_page": 6,
+        "start_line": 26,
+        "text_sha256": "0a6ce3686a6e2b03389db44eef867dc546197b81429c79fb6f4b20a6e3c34fcb"
+      }
+    },
+    "bnss-notice": {
+      "candidate_id": "passage_241f23cc9f3ba925cdd7ba481ebf7892e6f1cdeaa18f74f17f08b3e8163130bb",
+      "document_id": "doc_e694e3a724f30924d7cca0c493f3255db7c5e8ea9302fab401450da674b7c76e",
+      "processed_sha256": "2ca5bb047b91879f8baf62748175d7cb9507fb94713f321fb6bdd43a8cadee6a",
+      "rationale": "Complete original notification operative paragraph contains the First Schedule entry exception; rendered page compared.",
+      "raw_sha256": "0db8a86a0cf41fbf5ee304ee84b8b145da0bd523af510baf351d79d051ef657d",
+      "span": {
+        "end_line": 11,
+        "page_id": "doc_e694e3a724f30924d7cca0c493f3255db7c5e8ea9302fab401450da674b7c76e:page:000002",
+        "physical_page": 2,
+        "start_line": 8,
+        "text_sha256": "3c7a5d2fc0154b5008e95d8b0bf63899139ce5e9c1da71defe163531a9b8b934"
+      }
+    },
+    "bsa-oral": {
+      "candidate_id": "passage_b35c7872afc6f1907178c50ada49d3961f0e5aacfa37dd32bedf1c6fd9e73a5f",
+      "document_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81",
+      "processed_sha256": "33d8f596c53b0301a266ad795d4ff7631509cc1d9ebacbbb617b62c1586cd804",
+      "rationale": "Source-first reading of an existing exact selection before query retrieval. Full context/cross-references, visual extraction, rights and currentness require human review.",
+      "raw_sha256": "31ee68ea57b5303bf6697b5d8cb2004b9eb9180d7e9cbcbbdbf5bccab7cda5c1",
+      "span": {
+        "end_line": 9,
+        "page_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81:page:000020",
+        "physical_page": 20,
+        "start_line": 9,
+        "text_sha256": "ead3f522b8744933527033525aaa0bfd7a110d978ee767450117200563e2b7e7"
+      }
+    },
+    "bsa-producer": {
+      "candidate_id": "passage_fcec21ac4759808f524229a0fe3ba84b725568d30579b6e92acb77f9b2a727fc",
+      "document_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81",
+      "processed_sha256": "33d8f596c53b0301a266ad795d4ff7631509cc1d9ebacbbb617b62c1586cd804",
+      "rationale": "Source-first reading of an existing exact selection before query retrieval. Full context/cross-references, visual extraction, rights and currentness require human review.",
+      "raw_sha256": "31ee68ea57b5303bf6697b5d8cb2004b9eb9180d7e9cbcbbdbf5bccab7cda5c1",
+      "span": {
+        "end_line": 11,
+        "page_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81:page:000040",
+        "physical_page": 40,
+        "start_line": 9,
+        "text_sha256": "4c860bd11e571deb10a2a91f97d93a27f4e51b56644babbd44cd629186a53330"
+      }
+    }
+  },
+  "schema_version": 1
+}

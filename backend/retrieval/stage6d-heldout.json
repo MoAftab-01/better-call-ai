@@ -1,0 +1,452 @@
+{
+  "cases": [
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "signed-statement-training-card",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Locate original BNS material for a training card about someone who makes a statement but refuses to sign when a competent public servant requires it.",
+      "required_references": [
+        "bns-sign"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "warehouse-mark-history",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "An archival BNS worksheet distinguishes a counterfeited property mark from an ordinary label. Find the original paragraph about counterfeit marks.",
+      "required_references": [
+        "bns-mark"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "procedural-clock-audit",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Find the original BNSS passage for a history exercise about excluding time spent diligently prosecuting in a Court unable to entertain the matter.",
+      "required_references": [
+        "bnss-time"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "unavailable-speaker-credit",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "A source-reading seminar needs the original BSA paragraph on contradicting or corroborating a proved statement and impeaching or confirming its maker credit.",
+      "required_references": [
+        "bsa-credit"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "two-unrelated-training-cards",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Separate the original BNS refusal to sign a statement from the original BNSS discharge of an accused; provide archival material for each training card.",
+      "required_references": [
+        "bns-sign",
+        "bnss-discharge"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "time-versus-knowledge-file",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "The original BNSS discusses excluded limitation time, while the original BSA discusses facts especially within knowledge. Locate material for these distinct archival tasks.",
+      "required_references": [
+        "bnss-time",
+        "bsa-knowledge"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "conflated-bns-index",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "An original BNS study index conflates refusal to sign statements with counterfeit property marks. Locate the two separate archival passages.",
+      "required_references": [
+        "bns-sign",
+        "bns-mark"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "bsa-museum-card",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "A museum card is labelled BSA S.O. 849(E). Find its original commencement paragraph, without treating it as a statement of present legal position.",
+      "required_references": [
+        "bsa-notice"
+      ]
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "superseded-exception",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Has anything superseded the BNS commencement exception?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "fresh-order-question",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Has a fresh Gazette order removed the BNS commencement exception?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "next-month-burden",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "May a training appendix treat original BSA facts especially within knowledge as governing next month?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "since-date-position",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Does the BNS commencement exception have legal force since 2024?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "hypothetical-future-change",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "After a hypothetical 2027 amendment, would BNSS evidence interpretation operate differently?",
+      "required_references": []
+    },
+    {
+      "expected_status": "clarification_required",
+      "fault": null,
+      "id": "unidentified-card",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "These cards refer to a rule. Which source belongs beside the second row?",
+      "required_references": []
+    },
+    {
+      "expected_status": "clarification_required",
+      "fault": null,
+      "id": "better-unspecified",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Choose the better one.",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_evidence",
+      "fault": null,
+      "id": "civil-registration-distractor",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Can the original BNS counterfeit property mark paragraph settle civil trademark registration criteria?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_evidence",
+      "fault": null,
+      "id": "missing-photo-standard",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Compare original BNSS limitation exclusions with BSA passport application photo standards.",
+      "required_references": [
+        "bnss-time"
+      ]
+    },
+    {
+      "expected_status": "insufficient_evidence",
+      "fault": null,
+      "id": "legacy-numbering-shortcut",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "An index assumes IPC and BNS use identical numbering. Supply that correspondence from the archive.",
+      "required_references": []
+    },
+    {
+      "expected_status": "source_integrity_failed",
+      "fault": "missing_qualifier",
+      "id": "omitted-qualification-probe",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Inspect the original BNSS commencement entry when a candidate has dropped its qualification.",
+      "required_references": [
+        "bnss-notice"
+      ]
+    },
+    {
+      "expected_status": "source_integrity_failed",
+      "fault": "wrong_source_url",
+      "id": "misattributed-url-probe",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Inspect the original BSA commencement paragraph when its proposed provenance points to a different source URL.",
+      "required_references": [
+        "bsa-notice"
+      ]
+    }
+  ],
+  "catalog_sha256": "db74f8c4ad5e496a490a585ce2a04e46368f6bae457a121d5a30e9f8c6a399b0",
+  "evaluation_version": "stage6d-holdout-v1",
+  "frozen_stage6_sha256": "f4fd962a805a41cd7b642c7f05a2c1dd45deff5ac1aeb264cd225eeeeb3693f1",
+  "frozen_stage6c_sha256": "0bba841b65898e48aeb2c39ffd9e1d8e234440a71e1cc5c421b64f5affe4fc86",
+  "human_approved": false,
+  "index_version": "6cc6f59ef5d2799570881a1182e36f1e2d36056a7055fac3cb675ca2532a9823",
+  "label_method": "New source-first tasks authored by the same agent; not external independent expert labels. Not copied from prior questions; human verification pending. Freeze before any candidate retrieval; no semantic tuning on observed holdout outcomes.",
+  "qa_sha256": "236fec73f5dbcc37e31d253bc916dfd3076f8412cb196c13aba86acb6a07a491",
+  "references": {
+    "bns-abduction": {
+      "candidate_id": "passage_08e38ffd9c72506f28611e9a6c796a47a219e172c761a9df0d9ef929b3586c2d",
+      "document_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574",
+      "processed_sha256": "26d15d1a54c64ba86bb17a776c9de26a73a727f3b245a066bd92f093b3e051fb",
+      "rationale": "Original English archival text describes compelling movement through force or deceitful inducement.",
+      "raw_sha256": "67c92f7869420685e6cdc29b1bdde19fff91312b10241b3ed3e1163c5399600b",
+      "span": {
+        "end_line": 26,
+        "page_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574:page:000045",
+        "physical_page": 45,
+        "start_line": 25,
+        "text_sha256": "63d5e04e12f01a38ff6228cc23f75159aeccb5bd93521abf4b43c22a17384939"
+      }
+    },
+    "bns-accident": {
+      "candidate_id": "passage_bcd638f4aa77c9feea500abbcb22ba6749810c875dabe20b116f9613dbb74c0f",
+      "document_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574",
+      "processed_sha256": "26d15d1a54c64ba86bb17a776c9de26a73a727f3b245a066bd92f093b3e051fb",
+      "rationale": "Original English archival text addresses accidental lawful acts with proper care and caution, including an illustration.",
+      "raw_sha256": "67c92f7869420685e6cdc29b1bdde19fff91312b10241b3ed3e1163c5399600b",
+      "span": {
+        "end_line": 23,
+        "page_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574:page:000011",
+        "physical_page": 11,
+        "start_line": 17,
+        "text_sha256": "a88ca1bab3cb5ca51e63c914bc40e52db7f4f534064bd1e81782c3e96e7f0c81"
+      }
+    },
+    "bns-judge": {
+      "candidate_id": "passage_0d8018b21b6fe8a58213c4a61c76273f4459e5b5cf6d9bd4ff29a15de71d255f",
+      "document_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574",
+      "processed_sha256": "26d15d1a54c64ba86bb17a776c9de26a73a727f3b245a066bd92f093b3e051fb",
+      "rationale": "Original English archival text addresses a judge acting judicially and good-faith belief in legal power.",
+      "raw_sha256": "67c92f7869420685e6cdc29b1bdde19fff91312b10241b3ed3e1163c5399600b",
+      "span": {
+        "end_line": 4,
+        "page_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574:page:000011",
+        "physical_page": 11,
+        "start_line": 3,
+        "text_sha256": "41eecf205d376366e90bc24f3739decd8cc22f07461ec1bdef6f132fde0efecb"
+      }
+    },
+    "bns-mark": {
+      "candidate_id": "passage_02424ad03c8a1cfb8be6e1ee07f10cfe7c9112cf0b397c5ead624df44b845bfc",
+      "document_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574",
+      "processed_sha256": "26d15d1a54c64ba86bb17a776c9de26a73a727f3b245a066bd92f093b3e051fb",
+      "rationale": "Source-first agent text inspection for a new archival task; printed numbering and human legal verification remain unapproved.",
+      "raw_sha256": "67c92f7869420685e6cdc29b1bdde19fff91312b10241b3ed3e1163c5399600b",
+      "span": {
+        "end_line": 13,
+        "page_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574:page:000097",
+        "physical_page": 97,
+        "start_line": 5,
+        "text_sha256": "833f18e84458d5c352e7abd57ef23ec9c1e1b5a57816cc4bb073d822bbe23a9d"
+      }
+    },
+    "bns-notice": {
+      "candidate_id": "passage_667c29888c46581982215e00f1d6a49502dd25cc486efc572473d9cd759d2611",
+      "document_id": "doc_aff29a301e21598f7fe2e72f0a8bbc2e3bdf923b014480e5bb3e76564fd47654",
+      "processed_sha256": "eb7b007a054bacc0db8e3a9c10580974840db9a73034b508989c8a6111a120ee",
+      "rationale": "Complete original notification operative paragraph contains the BNS provision exception; rendered page compared.",
+      "raw_sha256": "dfcd5df23fb711f2996959b13ee6ff6bd32ed38be1e1f2d1c820cbba86e2a8c9",
+      "span": {
+        "end_line": 11,
+        "page_id": "doc_aff29a301e21598f7fe2e72f0a8bbc2e3bdf923b014480e5bb3e76564fd47654:page:000002",
+        "physical_page": 2,
+        "start_line": 8,
+        "text_sha256": "94eca2bcaf75181c3df3fdba361d55bf052b588241d46b01de0c25f0149ff11c"
+      }
+    },
+    "bns-order": {
+      "candidate_id": "passage_d1267b2684ae5534b040c8bcafee0f2c9e6f92ba941b335299abcc1f9d815c42",
+      "document_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574",
+      "processed_sha256": "26d15d1a54c64ba86bb17a776c9de26a73a727f3b245a066bd92f093b3e051fb",
+      "rationale": "Original English archival text addresses acts pursuant to a court order and the good-faith jurisdiction qualification.",
+      "raw_sha256": "67c92f7869420685e6cdc29b1bdde19fff91312b10241b3ed3e1163c5399600b",
+      "span": {
+        "end_line": 8,
+        "page_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574:page:000011",
+        "physical_page": 11,
+        "start_line": 5,
+        "text_sha256": "77743c3989d41a8161a941f7557ebf01a8fceca1137cbcb1301adc2ce8cdd0bc"
+      }
+    },
+    "bns-sign": {
+      "candidate_id": "passage_00764d536f7cd805042fc8d016602a5ed9ab3929e1dc5274b346469fe540e425",
+      "document_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574",
+      "processed_sha256": "26d15d1a54c64ba86bb17a776c9de26a73a727f3b245a066bd92f093b3e051fb",
+      "rationale": "Source-first agent text inspection for a new archival task; printed numbering and human legal verification remain unapproved.",
+      "raw_sha256": "67c92f7869420685e6cdc29b1bdde19fff91312b10241b3ed3e1163c5399600b",
+      "span": {
+        "end_line": 20,
+        "page_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574:page:000061",
+        "physical_page": 61,
+        "start_line": 17,
+        "text_sha256": "77ea5a05bd3eb1079f939657e716e5a9688715d03a825441ee52cfa6aa82eaaa"
+      }
+    },
+    "bnss-discharge": {
+      "candidate_id": "passage_025b5650c3dfad53a44d8e1d167c751562d3a845065613293da2ba08237e91f8",
+      "document_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6",
+      "processed_sha256": "579641be069ec37ce1324e4773604c572b4301b9cb97b3d410c90f15d714596e",
+      "rationale": "Original English archival text addresses discharge and recording reasons after considering the case record.",
+      "raw_sha256": "5e60e2afe30d0fe7eca4f8126301146b76c86a444e690581f81eb564843517fe",
+      "span": {
+        "end_line": 37,
+        "page_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6:page:000082",
+        "physical_page": 82,
+        "start_line": 32,
+        "text_sha256": "bf3d330397e87a20f43ae313cba98d5690b824ca2a6bc81ef7bd24a6f8803495"
+      }
+    },
+    "bnss-interpretation": {
+      "candidate_id": "passage_05be5c9c8db180bc015844153c190c8440d29c41387502e15d3e538782f1821f",
+      "document_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6",
+      "processed_sha256": "579641be069ec37ce1324e4773604c572b4301b9cb97b3d410c90f15d714596e",
+      "rationale": "Original English archival text addresses interpretation of evidence not understood by the accused or advocate.",
+      "raw_sha256": "5e60e2afe30d0fe7eca4f8126301146b76c86a444e690581f81eb564843517fe",
+      "span": {
+        "end_line": 15,
+        "page_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6:page:000096",
+        "physical_page": 96,
+        "start_line": 8,
+        "text_sha256": "ae640bd4ed83f914ddd7650a8590efc3b2d6645bde883bb957524dac22c43cfc"
+      }
+    },
+    "bnss-notice": {
+      "candidate_id": "passage_241f23cc9f3ba925cdd7ba481ebf7892e6f1cdeaa18f74f17f08b3e8163130bb",
+      "document_id": "doc_e694e3a724f30924d7cca0c493f3255db7c5e8ea9302fab401450da674b7c76e",
+      "processed_sha256": "2ca5bb047b91879f8baf62748175d7cb9507fb94713f321fb6bdd43a8cadee6a",
+      "rationale": "Complete original notification operative paragraph contains the First Schedule entry exception; rendered page compared.",
+      "raw_sha256": "0db8a86a0cf41fbf5ee304ee84b8b145da0bd523af510baf351d79d051ef657d",
+      "span": {
+        "end_line": 11,
+        "page_id": "doc_e694e3a724f30924d7cca0c493f3255db7c5e8ea9302fab401450da674b7c76e:page:000002",
+        "physical_page": 2,
+        "start_line": 8,
+        "text_sha256": "3c7a5d2fc0154b5008e95d8b0bf63899139ce5e9c1da71defe163531a9b8b934"
+      }
+    },
+    "bnss-sentences": {
+      "candidate_id": "passage_00538622ccc63f0a03c0d834e59caeb4d46d0c2c12ef63e98878d90cde228423",
+      "document_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6",
+      "processed_sha256": "579641be069ec37ce1324e4773604c572b4301b9cb97b3d410c90f15d714596e",
+      "rationale": "Original English archival text addresses concurrent and consecutive sentences, with qualifications retained.",
+      "raw_sha256": "5e60e2afe30d0fe7eca4f8126301146b76c86a444e690581f81eb564843517fe",
+      "span": {
+        "end_line": 42,
+        "page_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6:page:000010",
+        "physical_page": 10,
+        "start_line": 27,
+        "text_sha256": "f7c22c366e5c7d43be65bc791ebf16fba83a4809b1ebf0b4c049d562f48be572"
+      }
+    },
+    "bnss-time": {
+      "candidate_id": "passage_091e840d5fa636e8c66ad9d6fcad6dd3444daf0b9e233b4e1e1ab1854b99f007",
+      "document_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6",
+      "processed_sha256": "579641be069ec37ce1324e4773604c572b4301b9cb97b3d410c90f15d714596e",
+      "rationale": "Source-first agent text inspection for a new archival task; printed numbering and human legal verification remain unapproved.",
+      "raw_sha256": "5e60e2afe30d0fe7eca4f8126301146b76c86a444e690581f81eb564843517fe",
+      "span": {
+        "end_line": 43,
+        "page_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6:page:000154",
+        "physical_page": 154,
+        "start_line": 20,
+        "text_sha256": "b6d783682fad92c70e7e99af45bc7d6ee88194cd3f2bf87490f0009a2d932d7b"
+      }
+    },
+    "bsa-admission": {
+      "candidate_id": "passage_03333a002d5ecda0ddfa0c22e399ff3d3a7fb71d0a6675129674491e92e222cd",
+      "document_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81",
+      "processed_sha256": "33d8f596c53b0301a266ad795d4ff7631509cc1d9ebacbbb617b62c1586cd804",
+      "rationale": "Original English archival text addresses conditional admissions in civil cases and its explanation.",
+      "raw_sha256": "31ee68ea57b5303bf6697b5d8cb2004b9eb9180d7e9cbcbbdbf5bccab7cda5c1",
+      "span": {
+        "end_line": 24,
+        "page_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81:page:000011",
+        "physical_page": 11,
+        "start_line": 19,
+        "text_sha256": "434e67fbdddde96369906d9814d1a83cb186068a487e21d5e0bfae5295bf1660"
+      }
+    },
+    "bsa-alive": {
+      "candidate_id": "passage_0a4b77adda878c84a82d44ebfa3118c80ccad90846c6221bf27d45c1d48dd367",
+      "document_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81",
+      "processed_sha256": "33d8f596c53b0301a266ad795d4ff7631509cc1d9ebacbbb617b62c1586cd804",
+      "rationale": "Original English archival text addresses burden where a person was known alive within a specified historic period.",
+      "raw_sha256": "31ee68ea57b5303bf6697b5d8cb2004b9eb9180d7e9cbcbbdbf5bccab7cda5c1",
+      "span": {
+        "end_line": 20,
+        "page_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81:page:000033",
+        "physical_page": 33,
+        "start_line": 18,
+        "text_sha256": "d74fbcf10a25bfd01d34c4dd2baea8f6daf4b73cfbc8fb077055572a31846aee"
+      }
+    },
+    "bsa-credit": {
+      "candidate_id": "passage_1e79cee2769b620401fc93a7367e2081b79000b4ac0ff7a0824ee25184b02351",
+      "document_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81",
+      "processed_sha256": "33d8f596c53b0301a266ad795d4ff7631509cc1d9ebacbbb617b62c1586cd804",
+      "rationale": "Source-first agent text inspection for a new archival task; printed numbering and human legal verification remain unapproved.",
+      "raw_sha256": "31ee68ea57b5303bf6697b5d8cb2004b9eb9180d7e9cbcbbdbf5bccab7cda5c1",
+      "span": {
+        "end_line": 26,
+        "page_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81:page:000043",
+        "physical_page": 43,
+        "start_line": 22,
+        "text_sha256": "2f3c8093b78e98b0ba6a64dc25d8f54c07949d081cae364ce225a90ad61a7ca0"
+      }
+    },
+    "bsa-knowledge": {
+      "candidate_id": "passage_0ee5d0c62e70d0e0369087a0684f343f8ae24141b9d574b5d409fadfa73f224c",
+      "document_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81",
+      "processed_sha256": "33d8f596c53b0301a266ad795d4ff7631509cc1d9ebacbbb617b62c1586cd804",
+      "rationale": "Original English archival text addresses burden for facts especially within a person's knowledge, with illustrations.",
+      "raw_sha256": "31ee68ea57b5303bf6697b5d8cb2004b9eb9180d7e9cbcbbdbf5bccab7cda5c1",
+      "span": {
+        "end_line": 17,
+        "page_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81:page:000033",
+        "physical_page": 33,
+        "start_line": 11,
+        "text_sha256": "af49cd69a998631a0e240344e1ef0bdf4567aa96325833369d67e4840a0b1521"
+      }
+    },
+    "bsa-marriage": {
+      "candidate_id": "passage_120f53e9a0c44debca48f09013f6d377562cd4098cc54bb3932da8e9f4ba8486",
+      "document_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81",
+      "processed_sha256": "33d8f596c53b0301a266ad795d4ff7631509cc1d9ebacbbb617b62c1586cd804",
+      "rationale": "Original English archival text addresses marital communications and express qualifications/exceptions.",
+      "raw_sha256": "31ee68ea57b5303bf6697b5d8cb2004b9eb9180d7e9cbcbbdbf5bccab7cda5c1",
+      "span": {
+        "end_line": 24,
+        "page_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81:page:000037",
+        "physical_page": 37,
+        "start_line": 19,
+        "text_sha256": "e4803b626fd25c24bfa8ce0e5186f12c9e088bb0768d3256f75a049d57dcfb37"
+      }
+    },
+    "bsa-notice": {
+      "candidate_id": "passage_6c55f9a7fca605a78983e9cae28fa49712e5973bfc42a4a44e4435ad599de08f",
+      "document_id": "doc_648cf108a59bf5aad7e457f713d25da80c3e86c1cefbca84e419a48d1349a776",
+      "processed_sha256": "71cd76c2d13a9a675e5dc4d075507e3d6d5bb0c4c0e912e32a44c1856b81a429",
+      "rationale": "Complete original notification operative paragraph has no corresponding carve-out; rendered page compared.",
+      "raw_sha256": "fde9e9722eb4c01375525c2a30442903371913f4199b8cef1d031535d88228e7",
+      "span": {
+        "end_line": 10,
+        "page_id": "doc_648cf108a59bf5aad7e457f713d25da80c3e86c1cefbca84e419a48d1349a776:page:000002",
+        "physical_page": 2,
+        "start_line": 8,
+        "text_sha256": "4e595fb02672ee7a10d8e6f25d7d63d8439d62c2991cd9bd2cedb179c41aab0d"
+      }
+    }
+  },
+  "schema_version": 1
+}

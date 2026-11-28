@@ -1,0 +1,302 @@
+{
+  "cases": [
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "public-peace-glossary",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Locate the original BNS paragraph describing when fighting in a public place disturbs public peace and is called affray.",
+      "required_references": [
+        "bns-affray"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "document-destruction-file",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "For an original-text reading, find the BNS treatment of cancelling, destroying or defacing a will or valuable security.",
+      "required_references": [
+        "bns-document"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "disclosure-pressure-reading",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Inspect the original BNSS paragraph restricting promises or threats used to induce an accused to disclose or withhold knowledge, including its qualification.",
+      "required_references": [
+        "bnss-influence"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "magistrate-organisation",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "What does original BNSS text say about Executive Magistrates being subordinate to a District Magistrate and allocation of their business?",
+      "required_references": [
+        "bnss-hierarchy"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "memory-and-copy-reading",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Locate original BSA wording about a witness refreshing memory from writings and referring to a copy with Court permission.",
+      "required_references": [
+        "bsa-memory"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "leading-question-reading",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Find the original BSA paragraph defining a leading question and addressing objections and cross-examination.",
+      "required_references": [
+        "bsa-leading"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "two-instrument-reading",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Compare original BNS public-place fighting and affray with original BNSS promises or threats inducing an accused to disclose knowledge.",
+      "required_references": [
+        "bns-affray",
+        "bnss-influence"
+      ]
+    },
+    {
+      "expected_status": "historical_evidence_available",
+      "fault": null,
+      "id": "two-evidence-topics",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Compare original BSA text about witnesses refreshing memory from writings with original BSA text about leading questions in cross-examination.",
+      "required_references": [
+        "bsa-memory",
+        "bsa-leading"
+      ]
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "lifting-disclosure-restrictions",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Have the BNSS restrictions on influencing an accused been lifted?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "next-week-public-peace",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Does the BNS affray paragraph govern next week?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "replaced-evidence-appointment",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Has another notification replaced the BSA commencement appointment?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "displaced-exception-claim",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "A circular is said to have displaced the BNS exception. Can the original notification alone establish its status?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_current_evidence",
+      "fault": null,
+      "id": "accounting-year-procedure",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "When the next accounting year starts, will original BNSS tell us which procedural rule is then operative?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_evidence",
+      "fault": null,
+      "id": "biometric-benchmark-comparison",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Compare original BNS public-place affray with BSA biometric handwriting recognition software benchmarks.",
+      "required_references": [
+        "bns-affray"
+      ]
+    },
+    {
+      "expected_status": "insufficient_evidence",
+      "fault": null,
+      "id": "patent-fees-comparison",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Compare original BNSS Executive Magistrate hierarchy with BSA patent registration fees.",
+      "required_references": [
+        "bnss-hierarchy"
+      ]
+    },
+    {
+      "expected_status": "clarification_required",
+      "fault": null,
+      "id": "unnamed-instruments",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Which of the two unnamed instruments is meant?",
+      "required_references": []
+    },
+    {
+      "expected_status": "insufficient_evidence",
+      "fault": null,
+      "id": "personal-public-argument",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Will I be convicted for a public argument under BNS?",
+      "required_references": []
+    },
+    {
+      "expected_status": "source_integrity_failed",
+      "fault": "wrong_source_url",
+      "id": "affray-provenance-substitution",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Inspect the original BNS public-place fighting paragraph using a candidate with substituted provenance.",
+      "required_references": [
+        "bns-affray"
+      ]
+    },
+    {
+      "expected_status": "source_integrity_failed",
+      "fault": "invalid_hash",
+      "id": "disclosure-hash-substitution",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Inspect the original BNSS paragraph about promises or threats to induce disclosure using a mismatched source hash.",
+      "required_references": [
+        "bnss-influence"
+      ]
+    },
+    {
+      "expected_status": "source_integrity_failed",
+      "fault": "missing_qualifier",
+      "id": "entry-qualification-omission",
+      "label_status": "agent_text_checked_human_review_required",
+      "question": "Inspect the original BNSS commencement paragraph when the candidate omits its qualification.",
+      "required_references": [
+        "bnss-notice"
+      ]
+    }
+  ],
+  "catalog_sha256": "db74f8c4ad5e496a490a585ce2a04e46368f6bae457a121d5a30e9f8c6a399b0",
+  "evaluation_version": "stage6e-agent-v1",
+  "frozen_stage6_sha256": "f4fd962a805a41cd7b642c7f05a2c1dd45deff5ac1aeb264cd225eeeeb3693f1",
+  "frozen_stage6c_sha256": "0bba841b65898e48aeb2c39ffd9e1d8e234440a71e1cc5c421b64f5affe4fc86",
+  "frozen_stage6d_sha256": "79c1a8e38b5c773d1f7252d67c1346c80e70a13c82dff58376132aab7912946e",
+  "human_approved": false,
+  "index_version": "6cc6f59ef5d2799570881a1182e36f1e2d36056a7055fac3cb675ca2532a9823",
+  "label_method": "New source-first questions authored by the same agent AFTER policy/evaluator finalization. Six new positive-source topics, exact existing paragraph bindings; two parent passages visually observed by the agent, remaining four text-inspected. Human/independent legal review pending. Freeze before query retrieval; do not tune on these results.",
+  "qa_sha256": "236fec73f5dbcc37e31d253bc916dfd3076f8412cb196c13aba86acb6a07a491",
+  "references": {
+    "bns-affray": {
+      "candidate_id": "passage_cc2b7dd1d9e89cc5a3561da6103a3fa738e7820abfc0f43698dfd2fd54233994",
+      "document_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574",
+      "processed_sha256": "26d15d1a54c64ba86bb17a776c9de26a73a727f3b245a066bd92f093b3e051fb",
+      "rationale": "Source-first inspection of the complete existing archival selection before query retrieval; human/rights/currentness review pending.",
+      "raw_sha256": "67c92f7869420685e6cdc29b1bdde19fff91312b10241b3ed3e1163c5399600b",
+      "span": {
+        "end_line": 31,
+        "page_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574:page:000056",
+        "physical_page": 56,
+        "start_line": 27,
+        "text_sha256": "1eb6915c1c1ae3944a246b6a287706a48e86d0a395b157f7294ab519d983327b"
+      }
+    },
+    "bns-document": {
+      "candidate_id": "passage_00689168f820b8454d02d07c4d9eca72be102d0e1732d43a03c6f8f6b83fa8e8",
+      "document_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574",
+      "processed_sha256": "26d15d1a54c64ba86bb17a776c9de26a73a727f3b245a066bd92f093b3e051fb",
+      "rationale": "Source-first inspection of the complete existing archival selection before query retrieval; human/rights/currentness review pending.",
+      "raw_sha256": "67c92f7869420685e6cdc29b1bdde19fff91312b10241b3ed3e1163c5399600b",
+      "span": {
+        "end_line": 25,
+        "page_id": "doc_5d290011c13d9f72c4a2e5d98745efa61a195e10bf8b5546f425b9b7851b1574:page:000096",
+        "physical_page": 96,
+        "start_line": 20,
+        "text_sha256": "a57a73793dabf7183c3d2cf8e597446c0d42dc5554aef475f5af13c19c22e896"
+      }
+    },
+    "bnss-hierarchy": {
+      "candidate_id": "passage_0d3689eabbf33564776400bc9bebf33b7b900824e10f99149d5695f7f731c60a",
+      "document_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6",
+      "processed_sha256": "579641be069ec37ce1324e4773604c572b4301b9cb97b3d410c90f15d714596e",
+      "rationale": "Source-first inspection of the complete existing archival selection before query retrieval; human/rights/currentness review pending.",
+      "raw_sha256": "5e60e2afe30d0fe7eca4f8126301146b76c86a444e690581f81eb564843517fe",
+      "span": {
+        "end_line": 20,
+        "page_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6:page:000007",
+        "physical_page": 7,
+        "start_line": 14,
+        "text_sha256": "c6a70c67c515a7908f13b062b5dff8cff488acd69a442956ac0b84c20c570ea5"
+      }
+    },
+    "bnss-influence": {
+      "candidate_id": "passage_19aa51bb8d7f91133510bdcea618fffd160da70adc765bb316a1dbd6cb9a1636",
+      "document_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6",
+      "processed_sha256": "579641be069ec37ce1324e4773604c572b4301b9cb97b3d410c90f15d714596e",
+      "rationale": "Source-first inspection of the complete existing archival selection before query retrieval; human/rights/currentness review pending.",
+      "raw_sha256": "5e60e2afe30d0fe7eca4f8126301146b76c86a444e690581f81eb564843517fe",
+      "span": {
+        "end_line": 3,
+        "page_id": "doc_f38bf0b56725d0807173e5b9b633b5d3a98d36c60a16074c34be651b9cd34aa6:page:000107",
+        "physical_page": 107,
+        "start_line": 1,
+        "text_sha256": "f146a8e8ebc10dd81a3a23611eef1b88d952b5b821e7f76a2867f218e5778a72"
+      }
+    },
+    "bnss-notice": {
+      "candidate_id": "passage_241f23cc9f3ba925cdd7ba481ebf7892e6f1cdeaa18f74f17f08b3e8163130bb",
+      "document_id": "doc_e694e3a724f30924d7cca0c493f3255db7c5e8ea9302fab401450da674b7c76e",
+      "processed_sha256": "2ca5bb047b91879f8baf62748175d7cb9507fb94713f321fb6bdd43a8cadee6a",
+      "rationale": "Complete original notification operative paragraph contains the First Schedule entry exception; rendered page compared.",
+      "raw_sha256": "0db8a86a0cf41fbf5ee304ee84b8b145da0bd523af510baf351d79d051ef657d",
+      "span": {
+        "end_line": 11,
+        "page_id": "doc_e694e3a724f30924d7cca0c493f3255db7c5e8ea9302fab401450da674b7c76e:page:000002",
+        "physical_page": 2,
+        "start_line": 8,
+        "text_sha256": "3c7a5d2fc0154b5008e95d8b0bf63899139ce5e9c1da71defe163531a9b8b934"
+      }
+    },
+    "bsa-leading": {
+      "candidate_id": "passage_bc229dc0cf5ea8dd548b61b3870e0bd4b891d82fbbb2b61c7a43baf1f3f0740c",
+      "document_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81",
+      "processed_sha256": "33d8f596c53b0301a266ad795d4ff7631509cc1d9ebacbbb617b62c1586cd804",
+      "rationale": "Source-first inspection of the complete existing archival selection before query retrieval; human/rights/currentness review pending.",
+      "raw_sha256": "31ee68ea57b5303bf6697b5d8cb2004b9eb9180d7e9cbcbbdbf5bccab7cda5c1",
+      "span": {
+        "end_line": 19,
+        "page_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81:page:000040",
+        "physical_page": 40,
+        "start_line": 13,
+        "text_sha256": "e1f8a16481b652d487b4c4be0ffbe2692d41a76e7967624bf051551c5d66cafd"
+      }
+    },
+    "bsa-memory": {
+      "candidate_id": "passage_cd24e47ba4045e842c9048056f4e2727fb3b568a1bd3d41f06fae660bf9bb229",
+      "document_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81",
+      "processed_sha256": "33d8f596c53b0301a266ad795d4ff7631509cc1d9ebacbbb617b62c1586cd804",
+      "rationale": "Source-first inspection of the complete existing archival selection before query retrieval; human/rights/currentness review pending.",
+      "raw_sha256": "31ee68ea57b5303bf6697b5d8cb2004b9eb9180d7e9cbcbbdbf5bccab7cda5c1",
+      "span": {
+        "end_line": 39,
+        "page_id": "doc_c70eadff021cda5bc6facfc7e764e83caeb7c4d114fe7b984de9a4fdcb19ae81:page:000043",
+        "physical_page": 43,
+        "start_line": 27,
+        "text_sha256": "7a5d25986b9ac0953bb7e865a16753a5b9d0bbf2333b62be060ebad2c6be3d34"
+      }
+    }
+  },
+  "schema_version": 1
+}

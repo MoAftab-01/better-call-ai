@@ -3,3 +3,4 @@
 /backend/tests/fixtures/** -text
 /backend/qa/stage2e_visual_review.json -text
 /docs/** -text
+/backend/retrieval/stage6*.json -text
